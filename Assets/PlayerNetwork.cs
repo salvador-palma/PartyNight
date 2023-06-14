@@ -2,31 +2,31 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
-using TMPro;
-using Unity.Netcode.Transports.UTP;
 
 public class PlayerNetwork : NetworkBehaviour {
 
-    
-    public float speed;
+    public static PlayerNetwork LocalInstance {get; private set;}
+    public static float speed = 300f;
+    public float current_speed = 0f;
     Rigidbody2D rb;
     [SerializeField] private Transform skinTr;
-    
+    private bool Finished=false;
+    //[SerializeField] private PlayerVisual playerVisual;
 
-
-
-
-  
+    public override void OnNetworkSpawn()
+    {
+        if(IsOwner){LocalInstance = this;}
+        MiniGame.Instance.Setup();
+    }
     private void Start() {
         
         rb = gameObject.GetComponent<Rigidbody2D>();
-        gameObject.transform.Find("Nick").GetComponent<TextMeshProUGUI>().text = "IDK";
+        PlayerData playerData = GameState.Instance.getPlayerData(OwnerClientId);
+        skinTr.gameObject.GetComponent<SpriteRenderer>().color = GameState.Instance.getColor(playerData.colorID);
     }
-
-    // Update is called once per frame
     void Update()
     {
-        if(!IsOwner){return;}
+        if(!IsOwner || Finished){return;}
 
         Vector2 mousePos = Input.mousePosition;
         mousePos = Camera.main.ScreenToWorldPoint(mousePos);
@@ -38,6 +38,17 @@ public class PlayerNetwork : NetworkBehaviour {
 
     }
     private void FixedUpdate() {
-        rb.velocity = new Vector2(Input.GetAxis("Horizontal")*speed*Time.deltaTime,Input.GetAxis("Vertical")*speed*Time.deltaTime);
+        if(!IsOwner || Finished){return;}
+        rb.velocity = new Vector2(Input.GetAxis("Horizontal")*current_speed*Time.deltaTime,Input.GetAxis("Vertical")*current_speed*Time.deltaTime);
+    }
+
+    public void SetFinish(){
+        if(IsOwner){
+            Debug.Log("Finish " + OwnerClientId);
+            Finished=true;
+            GameUI.Instance.ShowWin();
+            GameState.Instance.PlayerFinishServerRpc();
+        }
+        
     }
 }
