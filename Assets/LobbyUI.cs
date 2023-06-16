@@ -22,12 +22,22 @@ public class LobbyUI : MonoBehaviour
     [SerializeField] private Transform LobbyContainer;
     [SerializeField] private Transform LobbyTemplate;
 
+    [SerializeField] private Animator ScrollerAnimator;
+
+    public static LobbyUI Instance;
+
     private void Awake() {
+        Instance = this;
         create.onClick.AddListener(()=> {
+            FadeOutScroller();
             LobbyManager.Instance.CreateLobby(lobbyNameField.text, privateToggle.isOn);
         });
-        join.onClick.AddListener(()=> {LobbyManager.Instance.QuickJoin();});
-        joinCode.onClick.AddListener(()=> {LobbyManager.Instance.JoinCode(lobbyCodeField.text);});
+        join.onClick.AddListener(()=> {
+            FadeOutScroller();
+            LobbyManager.Instance.QuickJoin();});
+        joinCode.onClick.AddListener(()=> {
+            FadeOutScroller();
+            LobbyManager.Instance.JoinCode(lobbyCodeField.text);});
         LobbyTemplate.gameObject.SetActive(false);
 
     }
@@ -64,5 +74,10 @@ public class LobbyUI : MonoBehaviour
 
     private void OnDestroy() {
         LobbyManager.Instance.OnLobbyListChanged -= LobbyListChanger;
+    }
+
+    public void FadeOutScroller(){
+        //ScrollerAnimator.gameObject.GetComponent<Scroller>().activated = true;
+        ScrollerAnimator.Play("LobbyScreenFadeOut");
     }
 }

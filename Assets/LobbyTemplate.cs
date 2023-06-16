@@ -12,6 +12,7 @@ public class LobbyTemplate : MonoBehaviour
 
     private void Awake() {
         GetComponent<Button>().onClick.AddListener(()=>{
+            LobbyUI.Instance.FadeOutScroller();
             LobbyManager.Instance.JoinID(lobby.Id);
         });
     }

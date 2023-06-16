@@ -10,6 +10,8 @@ public class Scroller : MonoBehaviour
     public float speed;
     public float x_Limit = -38.39f;
     public float x_Stay = 38.39f;
+
+    public bool activated = false;
     
     private void Awake() {
         DontDestroyOnLoad(gameObject);
@@ -17,6 +19,7 @@ public class Scroller : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(!activated){return;}
         img1.transform.position = new Vector2(img1.transform.position.x - Time.deltaTime * speed, img1.transform.position.y);
         img2.transform.position = new Vector2(img2.transform.position.x - Time.deltaTime * speed, img2.transform.position.y);
 

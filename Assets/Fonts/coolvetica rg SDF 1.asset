@@ -151,7 +151,7 @@ Material:
     - _ReflectFaceColor: {r: 0, g: 0, b: 0, a: 1}
     - _ReflectOutlineColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
-    - _UnderlayColor: {r: 0.7264151, g: 0, b: 0, a: 0.5}
+    - _UnderlayColor: {r: 0.0053634644, g: 0, b: 0.7254902, a: 0.5}
   m_BuildTextureStacks: []
 --- !u!114 &11400000
 MonoBehaviour:
@@ -163,11 +163,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 71c1514a6bd24e1e882cebbe1904ce04, type: 3}
-  m_Name: coolvetica rg SDF
+  m_Name: coolvetica rg SDF 1
   m_EditorClassIdentifier: 
-  hashCode: -1129159289
+  hashCode: -1293820138
   material: {fileID: -6547136252298061826}
-  materialHashCode: -1182315065
+  materialHashCode: -1324008202
   m_Version: 1.1.0
   m_SourceFontFileGUID: 5b2211e142f51b54a81cc7e47de5b395
   m_SourceFontFile_EditorRef: {fileID: 12800000, guid: 5b2211e142f51b54a81cc7e47de5b395, type: 3}

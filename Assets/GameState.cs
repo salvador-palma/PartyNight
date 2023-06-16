@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 using Unity.Netcode;
 using System;
+using System.Linq;
 
 public class GameState : NetworkBehaviour {
 
@@ -19,6 +20,8 @@ public class GameState : NetworkBehaviour {
     private NetworkList<PlayerData> playerDatas;
 
     private static Dictionary<ulong, int> PlayerEndDict = new Dictionary<ulong, int>();
+    private static Dictionary<ulong, int> PlayerPointsDict = new Dictionary<ulong, int>();
+
 
     private NetworkVariable<State> state = new NetworkVariable<State>(State.WAITING);
 
@@ -242,7 +245,12 @@ public class GameState : NetworkBehaviour {
             }
         }
         if(AllReady){
-            givePoints();
+            if(MiniGame.Instance.IsByScore){
+                givePointsByScores();
+            }else{
+                givePointsByArrival();
+            }
+            
             InitLeaderboardClientRpc();
             List<PlayerData> DataList = new List<PlayerData>();
             foreach(PlayerData playerData in playerDatas){
@@ -252,6 +260,7 @@ public class GameState : NetworkBehaviour {
             foreach (PlayerData d in DataList)
             {
                 AddLeaderboardClientRpc(d);
+                
             }
         }
     }
@@ -260,7 +269,7 @@ public class GameState : NetworkBehaviour {
         return Minigames[UnityEngine.Random.Range(0, Minigames.Count)];
     }
 
-    private void givePoints(){
+    private void givePointsByArrival(){
         int i = 0;
         foreach(ulong id in PlayerEndDict.Keys){
             PlayerData playerData =  getPlayerData(id);
@@ -268,8 +277,34 @@ public class GameState : NetworkBehaviour {
             i++;
             playerDatas[getPlayerDataID(id)] = playerData;
         }
+    }
+    private void givePointsByScores(){
+
+        Dictionary<ulong, int> transformedDictionary = PlayerPointsDict.OrderByDescending(pair => pair.Value).Select((pair, index) => new { pair.Key, Index = index }).ToDictionary(item => item.Key, item => item.Index);
+        int i = 0;
+        foreach(ulong id in transformedDictionary.Keys){
+            PlayerData playerData =  getPlayerData(id);
+            playerData.points += PointsPerPosition[transformedDictionary[id]];
+            i++;
+            playerDatas[getPlayerDataID(id)] = playerData;
+        }
+    }
+
+    [ServerRpc(RequireOwnership=false)]
+    public void AddPointServerRpc(int amount, ServerRpcParams serverRpcParams = default){
+        Debug.Log("DEBUGGING: " + serverRpcParams.Receive.SenderClientId);
+        if(PlayerPointsDict.ContainsKey(serverRpcParams.Receive.SenderClientId)){
+            PlayerPointsDict[serverRpcParams.Receive.SenderClientId] += amount;
+        }else{
+            PlayerPointsDict[serverRpcParams.Receive.SenderClientId] = amount;
+        }
         
-        
+    }
+    [ServerRpc(RequireOwnership=false)]
+    public void DebugPointsServerRpc(ServerRpcParams serverRpcParams = default){
+        foreach(ulong id in PlayerPointsDict.Keys){
+            Debug.Log("User: " + id + " with " + PlayerPointsDict[id] + " points");
+        }
     }
 
     [ClientRpc]

@@ -14,9 +14,6 @@ public class TimerToNext : NetworkBehaviour
     public bool activated = false;
     void Update()
     {   
-
-        
-
         timerMaxTimer -= Time.deltaTime;
         if(timerMaxTimer <=0){
             timerMaxTimer = timerMax;

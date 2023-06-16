@@ -20,4 +20,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Ram Jam.unity
     guid: 7dc63ef920387754cb856ed930a259be
+  - enabled: 1
+    path: Assets/Scenes/Pop Gun.unity
+    guid: d700d882123bb504e965495310cb53ca
   m_configObjects: {}

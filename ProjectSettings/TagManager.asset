@@ -43,3 +43,6 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: UIHover
+    uniqueID: 1900052813
+    locked: 0

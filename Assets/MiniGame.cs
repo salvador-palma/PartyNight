@@ -4,10 +4,11 @@ using Unity.Netcode;
 using UnityEngine;
 
 
-public class MiniGame : MonoBehaviour {
+public class MiniGame : NetworkBehaviour {
     public static MiniGame Instance;
     [SerializeField] private bool CameraFollows;
-    [SerializeField] private bool ArePointsReversed;
+    [SerializeField] public bool IsByScore;
+
     private bool SetupDone = false;
     private GameObject LocalPlayer;
     public Vector2[] SpawnPoints;
@@ -27,7 +28,6 @@ public class MiniGame : MonoBehaviour {
         SetupDone = true;
     }
 
-    
     private void LateUpdate() {
         if(CameraFollows && SetupDone){
             Vector3 camPos = Camera.main.transform.position;
@@ -40,5 +40,10 @@ public class MiniGame : MonoBehaviour {
             other.GetComponent<PlayerNetwork>().SetFinish();
         }
     }
+    public void DebugPoints(){
+        GameState.Instance.DebugPointsServerRpc();
+    }
+
+   
 }
 

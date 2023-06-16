@@ -43,12 +43,16 @@ public class PlayerNetwork : NetworkBehaviour {
     }
 
     public void SetFinish(){
-        if(IsOwner){
-            Debug.Log("Finish " + OwnerClientId);
+        if(IsOwner && !Finished){
             Finished=true;
             GameUI.Instance.ShowWin();
             GameState.Instance.PlayerFinishServerRpc();
         }
-        
+    }
+
+    public void AddPoint(int amount){
+        if(IsOwner){
+            GameState.Instance.AddPointServerRpc(amount);
+        }
     }
 }
