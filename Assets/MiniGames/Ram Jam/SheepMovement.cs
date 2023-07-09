@@ -11,6 +11,7 @@ public class SheepMovement : NetworkBehaviour
     [SerializeField] private float wanderTime;
     private float wanderTimeTimer;
     [SerializeField] private float wanderAngle;
+    private bool canWalk;
 
     private Quaternion targetRot;
     private void Start() {
@@ -20,6 +21,7 @@ public class SheepMovement : NetworkBehaviour
     }
 
     private void Update() {
+        if(!canWalk){return;}
         wanderTimeTimer-= Time.deltaTime;
         if(wanderTimeTimer<=0){
             wanderTimeTimer = wanderTime;
@@ -34,6 +36,11 @@ public class SheepMovement : NetworkBehaviour
     }
 
     private void FixedUpdate() {
+        if(!canWalk){return;}
         transform.position += transform.up * speed * Time.deltaTime;
+    }
+
+    public void InitSheep(){
+        canWalk = true;
     }
 }

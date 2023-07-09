@@ -582,6 +582,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5097f671696fb3e4ca459d102465b2b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ScrollerTransition: {fileID: 455783113}
 --- !u!4 &205569311
 Transform:
   m_ObjectHideFlags: 0
@@ -965,6 +966,7 @@ GameObject:
   m_Component:
   - component: {fileID: 455783112}
   - component: {fileID: 455783113}
+  - component: {fileID: 455783114}
   m_Layer: 0
   m_Name: Scroller
   m_TagString: Untagged
@@ -1009,6 +1011,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &455783114
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 455783110}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dcc02a9a7562e8e46b9f8034ed5dda28, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &478891679
 GameObject:
   m_ObjectHideFlags: 0
@@ -1486,7 +1500,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.13725491, g: 0.7568628, b: 0.9921569, a: 1}
+  m_BackGroundColor: {r: 0.9607843, g: 0.32156864, b: 0.72156864, a: 1}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0

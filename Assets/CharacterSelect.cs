@@ -5,14 +5,17 @@ using UnityEngine.SceneManagement;
 using Unity.Netcode;
 using System;
 
+
 public class CharacterSelect : NetworkBehaviour
 {
     public static CharacterSelect Instance;
     private static Dictionary<ulong, bool> PlayerReadyDict = new Dictionary<ulong, bool>();
+    [SerializeField] Animator ScrollerTransition;
 
     public event EventHandler onReadyChange;
     private void Awake() {
         Instance = this;
+        //DontDestroyOnLoad(gameObject);
     }
     public void setPlayerReady(){
         setPlayerReadyServerRpc();
@@ -31,15 +34,19 @@ public class CharacterSelect : NetworkBehaviour
             }
         }
         if(AllReady){
-            LobbyManager.Instance.DeleteLobby();
-            DisableScrollerClientRpc();
+            //LobbyManager.Instance.DeleteLobby();
+            //DisableScrollerClientRpc();
             NetworkManager.Singleton.SceneManager.LoadScene(GameState.Instance.getRandomMinigame(), LoadSceneMode.Single);
-
+           //CharSelectFadeOutClientRpc();
         }
+    }
+    [ClientRpc]
+    public void CharSelectFadeOutClientRpc(){
+         ScrollerTransition.Play("CharSelectFadeOut");
     }
 
     [ClientRpc]
-    private void DisableScrollerClientRpc(){
+    public void DisableScrollerClientRpc(){
          GameObject.Find("Scroller").SetActive(false);
     }
     [ClientRpc]
@@ -50,5 +57,14 @@ public class CharacterSelect : NetworkBehaviour
 
     public bool isPlayerReady(ulong clientId){
         return PlayerReadyDict.ContainsKey(clientId) && PlayerReadyDict[clientId];
+    }
+
+
+    [ServerRpc(RequireOwnership=false)]
+    public void CharSelectFadeOutEventServerRpc(){
+        
+        LobbyManager.Instance.DeleteLobby();
+        DisableScrollerClientRpc();
+        NetworkManager.Singleton.SceneManager.LoadScene(GameState.Instance.getRandomMinigame(), LoadSceneMode.Single);
     }
 }

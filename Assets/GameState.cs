@@ -17,11 +17,7 @@ public class GameState : NetworkBehaviour {
 
     private static Dictionary<ulong, bool> PlayerReadyDict = new Dictionary<ulong, bool>();
     
-    private NetworkList<PlayerData> playerDatas;
-
-    private static Dictionary<ulong, int> PlayerEndDict = new Dictionary<ulong, int>();
-    private static Dictionary<ulong, int> PlayerPointsDict = new Dictionary<ulong, int>();
-
+    public NetworkList<PlayerData> playerDatas;
 
     private NetworkVariable<State> state = new NetworkVariable<State>(State.WAITING);
 
@@ -30,7 +26,7 @@ public class GameState : NetworkBehaviour {
     
     [SerializeField] private List<Color> playerColors;
     [SerializeField] private List<string> Minigames;
-    [SerializeField] private List<int> PointsPerPosition;
+    [SerializeField] public List<int> PointsPerPosition;
     private int rankPos;
     private string PlayerName;
     
@@ -43,14 +39,6 @@ public class GameState : NetworkBehaviour {
 
         
     }
-
-    private void InitEndClients(){
-        rankPos=0;
-        foreach(ulong id in NetworkManager.Singleton.ConnectedClientsIds){
-            PlayerEndDict[id] = -1;
-        }
-    }
-
     private void playerDatas_OnListChanged(NetworkListEvent<PlayerData> changedList){
         OnPlayerDataNetworkListChanged?.Invoke(this, EventArgs.Empty);
     }  
@@ -124,9 +112,9 @@ public class GameState : NetworkBehaviour {
         connectionApprovalResponse.Approved = true;
     }
     
-
     [ServerRpc(RequireOwnership = false)]
     public void setPlayerReadyServerRpc(ServerRpcParams serverRpcParams = default){
+        
         PlayerReadyDict[serverRpcParams.Receive.SenderClientId] = true;
 
         bool AllReady = true;
@@ -137,14 +125,17 @@ public class GameState : NetworkBehaviour {
             }
         }
         if(AllReady){
-            InitEndClients();
+            Debug.Log("DEBUGGING MODE 1");
             setPlayerReadyClientRpc();
         }
     }
 
     [ClientRpc]
     public void setPlayerReadyClientRpc(){
+        Debug.Log("DEBUGGING MODE 2");
         GameUI.Instance.setAnimatorCountdown();
+        MiniGame.Instance.SetupBoards();
+        
     }
 
     [ServerRpc(RequireOwnership = false)]
@@ -231,84 +222,33 @@ public class GameState : NetworkBehaviour {
     }
 
     
-
-    [ServerRpc(RequireOwnership = false)]
-    public void PlayerFinishServerRpc(ServerRpcParams serverRpcParams = default){
-        PlayerEndDict[serverRpcParams.Receive.SenderClientId] = rankPos;
-        rankPos++;
-        bool AllReady = true;
-        foreach (ulong clientID in NetworkManager.Singleton.ConnectedClientsIds){
-            
-            if(!PlayerEndDict.ContainsKey(clientID) || PlayerEndDict[clientID] == -1){
-                AllReady = false;
-                break;
-            }
+    [ServerRpc]
+    public void FinishGameServerRpc(){
+        
+        MiniGame.Instance.MiniGameExtension.AddPoints();
+        MiniGame.Instance.ResetCamClientRpc();
+        InitLeaderboardClientRpc(true);
+        List<PlayerData> DataList = new List<PlayerData>();
+        foreach(PlayerData playerData in playerDatas){
+            DataList.Add(playerData);
         }
-        if(AllReady){
-            if(MiniGame.Instance.IsByScore){
-                givePointsByScores();
-            }else{
-                givePointsByArrival();
-            }
-            
-            InitLeaderboardClientRpc();
-            List<PlayerData> DataList = new List<PlayerData>();
-            foreach(PlayerData playerData in playerDatas){
-                DataList.Add(playerData);
-            }
-            DataList.Sort();
-            foreach (PlayerData d in DataList)
-            {
-                AddLeaderboardClientRpc(d);
-                
-            }
+        DataList.Sort();
+        foreach (PlayerData d in DataList)
+        {
+            AddLeaderboardClientRpc(d);
         }
+    
     }
-
     public string getRandomMinigame(){
         return Minigames[UnityEngine.Random.Range(0, Minigames.Count)];
     }
 
-    private void givePointsByArrival(){
-        int i = 0;
-        foreach(ulong id in PlayerEndDict.Keys){
-            PlayerData playerData =  getPlayerData(id);
-            playerData.points += PointsPerPosition[PlayerEndDict[id]];
-            i++;
-            playerDatas[getPlayerDataID(id)] = playerData;
-        }
-    }
-    private void givePointsByScores(){
+    
 
-        Dictionary<ulong, int> transformedDictionary = PlayerPointsDict.OrderByDescending(pair => pair.Value).Select((pair, index) => new { pair.Key, Index = index }).ToDictionary(item => item.Key, item => item.Index);
-        int i = 0;
-        foreach(ulong id in transformedDictionary.Keys){
-            PlayerData playerData =  getPlayerData(id);
-            playerData.points += PointsPerPosition[transformedDictionary[id]];
-            i++;
-            playerDatas[getPlayerDataID(id)] = playerData;
-        }
-    }
-
-    [ServerRpc(RequireOwnership=false)]
-    public void AddPointServerRpc(int amount, ServerRpcParams serverRpcParams = default){
-        Debug.Log("DEBUGGING: " + serverRpcParams.Receive.SenderClientId);
-        if(PlayerPointsDict.ContainsKey(serverRpcParams.Receive.SenderClientId)){
-            PlayerPointsDict[serverRpcParams.Receive.SenderClientId] += amount;
-        }else{
-            PlayerPointsDict[serverRpcParams.Receive.SenderClientId] = amount;
-        }
-        
-    }
-    [ServerRpc(RequireOwnership=false)]
-    public void DebugPointsServerRpc(ServerRpcParams serverRpcParams = default){
-        foreach(ulong id in PlayerPointsDict.Keys){
-            Debug.Log("User: " + id + " with " + PlayerPointsDict[id] + " points");
-        }
-    }
 
     [ClientRpc]
-    private void InitLeaderboardClientRpc(){
+    private void InitLeaderboardClientRpc(bool directConnect){
+        if(directConnect){GameUI.Instance.ShowWin();}
         GameUI.Instance.InitLeaderboard();
     }
     [ClientRpc]
@@ -317,20 +257,12 @@ public class GameState : NetworkBehaviour {
         GameUI.Instance.AddLeaderBoard(pd);
     }
 
-    private void debugPoints(){
-        foreach(PlayerData p in playerDatas){
-            Debug.Log("Player: " + p.ID + " with " + p.points + " points");
-        }
-    }
-
-
     public void LoadNextGame(){
         NetworkManager.Singleton.SceneManager.LoadScene(GameState.Instance.getRandomMinigame(), LoadSceneMode.Single);
     }
     
     public void ResetDicts(){
         PlayerReadyDict.Clear();
-        PlayerEndDict.Clear();
     }
 
     

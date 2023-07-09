@@ -6,6 +6,10 @@ TagManager:
   tags:
   - Scroller
   - Spawnpoints
+  - obj1
+  - Spawnpoints2
+  - Spawnpoints3
+  - Spawnpoints4
   layers:
   - Default
   - TransparentFX

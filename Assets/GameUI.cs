@@ -14,8 +14,10 @@ public class GameUI : NetworkBehaviour
     [SerializeField] private GameObject WinLeaderboardUI;
     [SerializeField] private Transform leaderboardContainer;
     [SerializeField] private Transform leaderboardTemplate;
+
+    [SerializeField] private Animator Scroller;
     
-    [SerializeField] private Transform PlayerPrefab;
+    
 
     [SerializeField] private TimerToNext NextTimer;
     private void Awake() {
@@ -25,6 +27,7 @@ public class GameUI : NetworkBehaviour
         leaderboardTemplate.gameObject.SetActive(false);
         TutorialPanel.SetActive(false);
         CountdownPanel.SetActive(true);
+        Debug.Log("DEBUGGING MODE 0");
         GameState.Instance.setPlayerReadyServerRpc();
     }
 
@@ -50,8 +53,8 @@ public class GameUI : NetworkBehaviour
 
     IEnumerator NextGame(){
         yield return new WaitForSecondsRealtime(5);
-        GameState.Instance.ResetDicts();
-        GameState.Instance.LoadNextGame();
+        Scroller.Play("MiniGameFadeOut");
+        
     }
     public void AddLeaderBoard(PlayerData playerData){
         Transform leaderTr = Instantiate(leaderboardTemplate, leaderboardContainer);
@@ -63,14 +66,8 @@ public class GameUI : NetworkBehaviour
     public void setAnimatorCountdown(){
         CountdownPanel.GetComponent<Animator>().Play("Countdown");
         if(IsServer){
-            int i = 0;
-            foreach(ulong clientID in NetworkManager.Singleton.ConnectedClientsIds){
-                Transform PlayerTr = Instantiate(PlayerPrefab);
-                Vector2[] positions = MiniGame.Instance.SpawnPoints;
-                PlayerTr.transform.position = positions[i];
-                i++;
-                PlayerTr.GetComponent<NetworkObject>().SpawnAsPlayerObject(clientID, true);
-            }
+            Debug.Log("DEBUGGING MODE 3");
+            MiniGame.Instance.MiniGameExtension.SpawnPlayers();
         }
         
     }

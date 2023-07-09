@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 public class CleanUp : MonoBehaviour
 {
     public void Awake(){
+        
         if(SceneManager.GetActiveScene().name == "StartMenu"){
             DeletePermanentObjects();
         }
