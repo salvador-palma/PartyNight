@@ -27,7 +27,7 @@ public class GameUI : NetworkBehaviour
         leaderboardTemplate.gameObject.SetActive(false);
         TutorialPanel.SetActive(false);
         CountdownPanel.SetActive(true);
-        Debug.Log("DEBUGGING MODE 0");
+       
         GameState.Instance.setPlayerReadyServerRpc();
     }
 

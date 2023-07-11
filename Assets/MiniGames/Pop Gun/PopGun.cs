@@ -21,27 +21,21 @@ public class PopGun : NetworkBehaviour, MiniGameCore
     private Dictionary<ulong,TextMeshProUGUI> PlayerPoints = new Dictionary<ulong, TextMeshProUGUI>();
     
 
-    private NetworkList<ulong> IDS;
+    
 
 
     private void Start() {
-        IDS = new NetworkList<ulong>();
+        
         PointBoardTemplate.gameObject.SetActive(false);
         PlayerPointsDict = new Dictionary<ulong, int>();
 
         
-        if(IsServer){
-            
-            foreach (ulong id in NetworkManager.Singleton.ConnectedClientsIds)
-            {
-                IDS.Add(id);
-            }
-        }
+        
     }
     public void InitGame()
     {
 
-        SetupBoards();
+        SetupBoardsClientRpc();
         initTimerClientRpc(15);
         
         for (int i = 0; i < SpawnAmount; i++)
@@ -114,8 +108,9 @@ public class PopGun : NetworkBehaviour, MiniGameCore
         }
     }
 
-    public void SetupBoards(){
-        foreach (ulong id in IDS)
+    [ClientRpc]
+    public void SetupBoardsClientRpc(){
+        foreach (ulong id in MiniGame.Instance.IDS)
         {   
             Transform tempTr = Instantiate(PointBoardTemplate,PointBoardContainer);
             PlayerData playerData = GameState.Instance.getPlayerData(id);

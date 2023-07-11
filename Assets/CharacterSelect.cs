@@ -15,7 +15,6 @@ public class CharacterSelect : NetworkBehaviour
     public event EventHandler onReadyChange;
     private void Awake() {
         Instance = this;
-        //DontDestroyOnLoad(gameObject);
     }
     public void setPlayerReady(){
         setPlayerReadyServerRpc();
@@ -34,8 +33,8 @@ public class CharacterSelect : NetworkBehaviour
             }
         }
         if(AllReady){
-            //LobbyManager.Instance.DeleteLobby();
-            //DisableScrollerClientRpc();
+            LobbyManager.Instance.DeleteLobby();
+            DisableScrollerClientRpc();
             NetworkManager.Singleton.SceneManager.LoadScene(GameState.Instance.getRandomMinigame(), LoadSceneMode.Single);
            //CharSelectFadeOutClientRpc();
         }

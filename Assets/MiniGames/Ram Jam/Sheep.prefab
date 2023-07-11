@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 8710211979801062048}
   - component: {fileID: 8710211979801062049}
   - component: {fileID: 8710211980178049781}
-  - component: {fileID: 1140038947848845374}
-  - component: {fileID: 4973283802643728856}
+  - component: {fileID: 2405310769812067570}
+  - component: {fileID: 673662787922432471}
   m_Layer: 0
   m_Name: Sheep
   m_TagString: obj1
@@ -83,9 +83,9 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 300
+  m_Mass: 1000000
   m_LinearDrag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 0
   m_GravityScale: 0
   m_Material: {fileID: 0}
   m_Interpolate: 0
@@ -111,7 +111,7 @@ MonoBehaviour:
   SceneMigrationSynchronization: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
---- !u!114 &1140038947848845374
+--- !u!114 &2405310769812067570
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -141,7 +141,7 @@ MonoBehaviour:
   InLocalSpace: 0
   Interpolate: 1
   SlerpPosition: 0
---- !u!114 &4973283802643728856
+--- !u!114 &673662787922432471
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

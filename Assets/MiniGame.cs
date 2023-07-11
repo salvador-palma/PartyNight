@@ -38,7 +38,7 @@ public class MiniGame : NetworkBehaviour {
     
     
     private Dictionary<ulong,TextMeshProUGUI> PlayerPoints = new Dictionary<ulong, TextMeshProUGUI>();
-    private NetworkList<ulong> IDS;
+    public NetworkList<ulong> IDS;
 
 
     private void Awake() {

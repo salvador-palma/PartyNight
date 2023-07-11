@@ -14,16 +14,13 @@ public class TargetScript : NetworkBehaviour
     public int value;
     public int ID;
 
-    public override void OnNetworkSpawn(){
 
+    private void Start() {
         TargetPrefab = (GameObject)Resources.Load("Target");
         gameObject.GetComponent<SpriteRenderer>().enabled =true;
     }
 
-    private void Awake() {
-        ID=MAX_ID;
-        MAX_ID++;
-    }
+    
 
     [ServerRpc(RequireOwnership=false)]
     public void SpawnTargetServerRpc(float x, float y){

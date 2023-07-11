@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
 using System.Linq;
-
+using TMPro;
+using UnityEngine.UI;
 public class CatchaTon : NetworkBehaviour, MiniGameCore
 {
     [SerializeField] private TimerToEnd EndTimer;
@@ -78,13 +79,15 @@ public class CatchaTon : NetworkBehaviour, MiniGameCore
         return vec;
     }
 
-    public void AddPoint(int team){
+    public void AddPoint(int team, int amount){
         if(teamPoints.ContainsKey(team)){
-            teamPoints[team] = 1;
+            teamPoints[team] = amount;
         }else{
-            teamPoints[team] += 1;
+            teamPoints[team] += amount;
         }
     }
 
+
+ 
 
 }

@@ -36,15 +36,16 @@ public class PlayerNetwork : NetworkBehaviour {
         if(Input.GetKeyDown(KeyCode.Space)){
             MiniGame.Instance.MiniGameExtension.Interact(OwnerClientId);
         }
+        
+    }
+    public virtual void FixedUpdate() {
+        if(!IsOwner || Finished){return;}
+        rb.velocity = new Vector2(Input.GetAxis("Horizontal")*current_speed*Time.deltaTime,Input.GetAxis("Vertical")*current_speed*Time.deltaTime);
         Vector2 mousePos = Input.mousePosition;
         mousePos = Camera.main.ScreenToWorldPoint(mousePos);
         Vector2 direction = new Vector2(mousePos.x - skinTr.position.x, mousePos.y - skinTr.position.y);
         
         skinTr.up = direction;
-    }
-    public virtual void FixedUpdate() {
-        if(!IsOwner || Finished){return;}
-        rb.velocity = new Vector2(Input.GetAxis("Horizontal")*current_speed*Time.deltaTime,Input.GetAxis("Vertical")*current_speed*Time.deltaTime);
     }
 
     public void SetFinish(){

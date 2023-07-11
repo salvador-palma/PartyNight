@@ -125,14 +125,12 @@ public class GameState : NetworkBehaviour {
             }
         }
         if(AllReady){
-            Debug.Log("DEBUGGING MODE 1");
             setPlayerReadyClientRpc();
         }
     }
 
     [ClientRpc]
     public void setPlayerReadyClientRpc(){
-        Debug.Log("DEBUGGING MODE 2");
         GameUI.Instance.setAnimatorCountdown();
         MiniGame.Instance.SetupBoards();
         
@@ -264,6 +262,8 @@ public class GameState : NetworkBehaviour {
     public void ResetDicts(){
         PlayerReadyDict.Clear();
     }
+
+    
 
     
 
