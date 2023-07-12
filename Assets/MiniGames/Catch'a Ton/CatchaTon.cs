@@ -32,7 +32,7 @@ public class CatchaTon : NetworkBehaviour, MiniGameCore
 
     public void InitGame()
     {
-        initTimerClientRpc(30);
+        initTimerClientRpc(60);
     }
     [ClientRpc]
     public void initTimerClientRpc(int time){

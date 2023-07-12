@@ -7,14 +7,22 @@ using Unity.Netcode;
 public class Pellet : NetworkBehaviour
 {
     private void OnTriggerEnter2D(Collider2D other) {
-        if(!IsServer){return;}
+        NetworkObject nObj = other.GetComponent<NetworkObject>();
+        
+        if(!nObj.IsOwner){return;}
         if(other.tag == "Player"){
-
-            bool res = other.GetComponent<PlayerNetworkCatchaTon>().Pick();
-            if(res){
-                GetComponent<NetworkObject>().Despawn();
+            PlayerNetworkCatchaTon p = other.GetComponent<PlayerNetworkCatchaTon>();
+            if(p.ball_amount < PlayerNetworkCatchaTon.MAX_BALLS){
+                destroyObjectServerRpc();
+                p.Pick();
             }
             
+            
         }
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    public void destroyObjectServerRpc(){
+        GetComponent<NetworkObject>().Despawn();
     }
 }
