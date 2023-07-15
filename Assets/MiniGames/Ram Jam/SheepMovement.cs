@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class SheepMovement : NetworkBehaviour 
 {
+    [SerializeField] private Sprite[] sprites;
     [SerializeField] private float speed;
     [SerializeField] private float TurnSpeed;
     [SerializeField] private float wanderTime;
@@ -15,7 +16,8 @@ public class SheepMovement : NetworkBehaviour
 
     private Quaternion targetRot;
     private void Start() {
-        
+        int t = Random.Range(0,3);
+        GetComponentInChildren<SpriteRenderer>().sprite = sprites[t];
         wanderTimeTimer = wanderTime;
         transform.Rotate(0,0,Random.Range(-180,180));
     }

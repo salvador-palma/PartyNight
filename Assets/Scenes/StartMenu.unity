@@ -1424,7 +1424,7 @@ MonoBehaviour:
   speed: 0.5
   x_Limit: -38.39
   x_Stay: 38.39
-  activated: 0
+  activated: 1
 --- !u!1 &2097348684
 GameObject:
   m_ObjectHideFlags: 0

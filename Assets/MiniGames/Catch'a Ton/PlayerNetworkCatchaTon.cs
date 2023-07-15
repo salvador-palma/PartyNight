@@ -5,49 +5,103 @@ using Unity.Netcode;
 
 public class PlayerNetworkCatchaTon : PlayerNetwork
 {
-    public const int MAX_BALLS = 3;
-    [SerializeField] public int ball_amount=0;
+    
+
+    [SerializeField] private float[] speeds;
+   
+    [SerializeField]private int[] pellets;
+
+    
     [SerializeField] public SpriteRenderer[] catches;
     private CatchaTon Game;
     public override void Start() {
         base.Start();
         Game = (CatchaTon)MiniGame.Instance.MiniGameExtension;
-        updateAmountClientRpc(0);
+        pellets =new int[3]{-1,-1,-1};
+        updateAmountClientRpc(pellets);
     }
     
     public void Flush(int team){
-        Game.AddPoint(team, ball_amount);
-        updateAmountClientRpc(0);
-    }
+        Game.AddPointServerRpc(team, getBasketValue());
+        pellets = new int[3]{-1,-1,-1};
 
-    public void Pick(){
-        ball_amount++;
-        int temp = ball_amount;
-        bool check = true;
         for (int i = 0; i < catches.Length; i++)
         {
-            if(i == ball_amount){check = !check;}
-            catches[i].enabled = check;
+            catches[i].enabled = false;
         }
-        callUpdateServerRpc(ball_amount);
+       
+        callUpdateServerRpc(pellets);
+    }
+
+    public int getBasketValue(){
+        int temp = 0;
+        for (int i = 0; i < pellets.Length; i++)
+        {
+            if(pellets[i]==-1){continue;}
+            temp += Game.pelletValues[pellets[i]];
+        }
+        return temp;
+    }
+
+    public void Pick(int type){
+        
+
+        pellets = AddPellet(pellets, type);
+        for (int i = 0; i < catches.Length; i++)
+        {
+            if(pellets[i]==-1){catches[i].enabled=false;}
+            else{
+                catches[i].sprite = Game.sprites[pellets[i]];
+                catches[i].enabled = true;
+            }
+        }
+        
+        callUpdateServerRpc(pellets);
+        
+    }
+
+    public bool isFull(){
+        return pellets[pellets.Length - 1] != -1;
+    }
+
+    public int[] AddPellet(int[] s, int val){
+        int[] temp = new int[s.Length];
+        bool check = false;
+        for (int i = 0; i < s.Length; i++)
+        {
+            if(s[i]==-1 && !check){
+                temp[i] = val;
+                check = true;
+            }else{
+                temp[i] = s[i];
+            }
+        }
+        return temp;
     }
 
     [ServerRpc(RequireOwnership = false)]
-    public void callUpdateServerRpc(int inc){
+    public void callUpdateServerRpc(int[] inc){
         updateAmountClientRpc(inc);
+        
     }
 
     [ClientRpc]
-    public void updateAmountClientRpc(int inc){
-        ball_amount = inc;
-        int temp = ball_amount;
-        bool check = true;
+    public void updateAmountClientRpc(int[] inc){
+        pellets = inc;
+        int num = 0;
         for (int i = 0; i < catches.Length; i++)
         {
-            if(i == ball_amount){check = !check;}
-            catches[i].enabled = check;
+            if(pellets[i]==-1){catches[i].enabled=false;}
+            else{
+                catches[i].sprite = Game.sprites[pellets[i]];
+                catches[i].enabled = true;
+                num++;
+            }
         }
+        base.current_speed = speeds[num];
     }
+
+    
 
 
 }

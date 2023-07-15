@@ -33,10 +33,10 @@ public class CharacterSelect : NetworkBehaviour
             }
         }
         if(AllReady){
-            LobbyManager.Instance.DeleteLobby();
-            DisableScrollerClientRpc();
-            NetworkManager.Singleton.SceneManager.LoadScene(GameState.Instance.getRandomMinigame(), LoadSceneMode.Single);
-           //CharSelectFadeOutClientRpc();
+            // LobbyManager.Instance.DeleteLobby();
+            // DisableScrollerClientRpc();
+            // NetworkManager.Singleton.SceneManager.LoadScene(GameState.Instance.getRandomMinigame(), LoadSceneMode.Single);
+           CharSelectFadeOutClientRpc();
         }
     }
     [ClientRpc]
@@ -58,8 +58,12 @@ public class CharacterSelect : NetworkBehaviour
         return PlayerReadyDict.ContainsKey(clientId) && PlayerReadyDict[clientId];
     }
 
-
-    [ServerRpc(RequireOwnership=false)]
+    public void CharSelectFadeOutEvent(){
+        if(IsServer){
+            CharSelectFadeOutEventServerRpc();
+        }
+    }
+    [ServerRpc]
     public void CharSelectFadeOutEventServerRpc(){
         
         LobbyManager.Instance.DeleteLobby();

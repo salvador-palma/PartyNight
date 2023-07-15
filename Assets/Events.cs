@@ -1,8 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Unity.Netcode;
-using UnityEngine.SceneManagement;
+
 
 public class Events : MonoBehaviour
 {
@@ -19,14 +18,13 @@ public class Events : MonoBehaviour
 
     public void startGame(){
         
-        CharacterSelect.Instance.CharSelectFadeOutEventServerRpc();
+        CharacterSelect.Instance.CharSelectFadeOutEvent();
         
         
     }
 
     public void nextGame(){
-        GameState.Instance.ResetDicts();
-        GameState.Instance.LoadNextGame();
+        GameUI.Instance.next();
     }
     
     

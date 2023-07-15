@@ -53,8 +53,12 @@ public class GameUI : NetworkBehaviour
 
     IEnumerator NextGame(){
         yield return new WaitForSecondsRealtime(5);
-        Scroller.Play("MiniGameFadeOut");
+        StartMiniGameFadeOutClientRpc();
         
+    }
+    [ClientRpc]
+    public void StartMiniGameFadeOutClientRpc(){
+         Scroller.Play("MiniGameFadeOut");
     }
     public void AddLeaderBoard(PlayerData playerData){
         Transform leaderTr = Instantiate(leaderboardTemplate, leaderboardContainer);
@@ -66,10 +70,16 @@ public class GameUI : NetworkBehaviour
     public void setAnimatorCountdown(){
         CountdownPanel.GetComponent<Animator>().Play("Countdown");
         if(IsServer){
-            Debug.Log("DEBUGGING MODE 3");
             MiniGame.Instance.MiniGameExtension.SpawnPlayers();
         }
         
+    }
+
+    public void next(){
+        if(IsServer){
+            GameState.Instance.ResetDicts();
+            GameState.Instance.LoadNextGame();
+        }
     }
 
     

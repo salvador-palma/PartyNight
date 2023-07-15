@@ -8,9 +8,13 @@ public class Basket : NetworkBehaviour
     [SerializeField] int team;
 
     private void OnTriggerEnter2D(Collider2D other) {
-        if(!IsServer){return;}
+        NetworkObject nObj = other.GetComponent<NetworkObject>();
+        
+        if(!nObj.IsOwner){return;}
         if(other.tag == "Player"){
+            
             other.GetComponent<PlayerNetworkCatchaTon>().Flush(team);
+            
         }
     }
 }
