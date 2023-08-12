@@ -36,9 +36,11 @@ public class CharacterSelect : NetworkBehaviour
             // LobbyManager.Instance.DeleteLobby();
             // DisableScrollerClientRpc();
             // NetworkManager.Singleton.SceneManager.LoadScene(GameState.Instance.getRandomMinigame(), LoadSceneMode.Single);
-           CharSelectFadeOutClientRpc();
+            PlayerReadyDict.Clear();
+            CharSelectFadeOutClientRpc();
         }
     }
+    
     [ClientRpc]
     public void CharSelectFadeOutClientRpc(){
          ScrollerTransition.Play("CharSelectFadeOut");

@@ -87,6 +87,7 @@ public class PlayerNetworkCatchaTon : PlayerNetwork
 
     [ClientRpc]
     public void updateAmountClientRpc(int[] inc){
+        
         pellets = inc;
         int num = 0;
         for (int i = 0; i < catches.Length; i++)
@@ -98,6 +99,7 @@ public class PlayerNetworkCatchaTon : PlayerNetwork
                 num++;
             }
         }
+        if(!Game.GameOn){return;}
         base.current_speed = speeds[num];
     }
 

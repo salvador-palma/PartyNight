@@ -16,8 +16,7 @@ public class CatchaTon : NetworkBehaviour, MiniGameCore
     [SerializeField] private Dictionary<int,int> teamPoints; //team -> points
 
 
-    [SerializeField] private Transform PointBoardContainer;
-    [SerializeField] private Transform PointBoardTemplate;
+    [SerializeField] private Transform[] PointsBoards;
     [SerializeField] private int[] points = new int[4]{15,10,5,2};
     [SerializeField] private Color[] teamColors;
     private Dictionary<int,TextMeshProUGUI> PlayerPoints = new Dictionary<int, TextMeshProUGUI>();
@@ -168,10 +167,8 @@ public class CatchaTon : NetworkBehaviour, MiniGameCore
     public void SetupBoardsClientRpc(){
         foreach(int teamID in teamPoints.Keys)
         {   
-            Transform tempTr = Instantiate(PointBoardTemplate,PointBoardContainer);
-            tempTr.gameObject.SetActive(true);
-            tempTr.GetComponent<Image>().color =  teamColors[teamID];
-            TextMeshProUGUI pointText = tempTr.gameObject.GetComponentInChildren<TextMeshProUGUI>();
+            
+            TextMeshProUGUI pointText = PointsBoards[teamID].gameObject.GetComponentInChildren<TextMeshProUGUI>();
             pointText.text = 0.ToString();
             PlayerPoints[teamID] = pointText;
             

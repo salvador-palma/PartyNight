@@ -66,6 +66,7 @@ public class GameUI : NetworkBehaviour
         leaderTr.Find("Points").GetComponent<TextMeshProUGUI>().text = playerData.points.ToString();
         leaderTr.gameObject.SetActive(true); 
     }
+    
 
     public void setAnimatorCountdown(){
         CountdownPanel.GetComponent<Animator>().Play("Countdown");
@@ -77,8 +78,14 @@ public class GameUI : NetworkBehaviour
 
     public void next(){
         if(IsServer){
-            GameState.Instance.ResetDicts();
-            GameState.Instance.LoadNextGame();
+            GameState gs = GameState.Instance;
+            if(gs.hasWinner()){
+                gs.LoadWinningScreen();
+            }else{
+                GameState.Instance.ResetDicts();
+                GameState.Instance.LoadNextGame();
+            }
+            
         }
     }
 

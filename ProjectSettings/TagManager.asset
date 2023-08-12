@@ -10,14 +10,16 @@ TagManager:
   - Spawnpoints2
   - Spawnpoints3
   - Spawnpoints4
+  - extra
+  - Inter
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Extra
   - Water
   - UI
-  - 
+  - Inter
   - 
   - 
   - 

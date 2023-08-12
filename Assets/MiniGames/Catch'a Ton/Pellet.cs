@@ -13,11 +13,13 @@ public class Pellet : NetworkBehaviour
         GetComponent<SpriteRenderer>().sprite = ((CatchaTon)MiniGame.Instance.MiniGameExtension).sprites[Type];
     }
     private void OnTriggerEnter2D(Collider2D other) {
-        NetworkObject nObj = other.GetComponent<NetworkObject>();
         
-        if(!nObj.IsOwner){return;}
+        
+        
         if(other.tag == "Player"){
-            PlayerNetworkCatchaTon p = other.GetComponent<PlayerNetworkCatchaTon>();
+            NetworkObject nObj = other.transform.parent.parent.GetComponent<NetworkObject>();
+            if(!nObj.IsOwner){return;}
+            PlayerNetworkCatchaTon p = nObj.gameObject.GetComponent<PlayerNetworkCatchaTon>();
             if(!p.isFull()){
                 
                 GetComponent<SpriteRenderer>().enabled = false;

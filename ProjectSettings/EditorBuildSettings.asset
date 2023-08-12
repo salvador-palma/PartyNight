@@ -24,7 +24,7 @@ EditorBuildSettings:
     path: Assets/Scenes/Split Decision.unity
     guid: 3ff8ae1b06e48424389a07420f7b446a
   - enabled: 1
-    path: Assets/Scenes/Ram Jam.unity
+    path: Assets/Scenes/Penguin Maze.unity
     guid: 7dc63ef920387754cb856ed930a259be
   - enabled: 1
     path: Assets/Scenes/Tug Of War.unity
@@ -32,4 +32,13 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Catch'a Ton.unity
     guid: 294aa3bf05c58cf4b8943e0beede7736
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
+  - enabled: 1
+    path: Assets/Scenes/Results.unity
+    guid: 859c4ebf28a708d47a2eb67a2b988f0a
+  - enabled: 1
+    path: Assets/Scenes/And the winner is....unity
+    guid: 88c4e06ec662b4540bf4ea221f5879d1
   m_configObjects: {}

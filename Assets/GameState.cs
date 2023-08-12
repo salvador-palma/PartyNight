@@ -13,6 +13,8 @@ public class GameState : NetworkBehaviour {
 
 
     enum State{WAITING, INGAME, FINISHED}
+
+    private int MAXPOINTS = 10;
     [HideInInspector] public static GameState Instance {get; private set;}
 
     private static Dictionary<ulong, bool> PlayerReadyDict = new Dictionary<ulong, bool>();
@@ -251,7 +253,7 @@ public class GameState : NetworkBehaviour {
     }
     [ClientRpc]
     private void AddLeaderboardClientRpc(PlayerData pd){
-        
+        Debug.Log("Player: " + pd.nickname + " Points: " + pd.points);
         GameUI.Instance.AddLeaderBoard(pd);
     }
 
@@ -262,6 +264,35 @@ public class GameState : NetworkBehaviour {
     public void ResetDicts(){
         PlayerReadyDict.Clear();
     }
+
+    public bool hasWinner(){
+        foreach(PlayerData p in playerDatas){
+            if(p.points >= MAXPOINTS){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void LoadWinningScreen(){
+        NetworkManager.Singleton.SceneManager.LoadScene("And the winner is...", LoadSceneMode.Single);
+    }
+
+    public void GetFinalLeaderBoard(){
+        List<PlayerData> l = new List<PlayerData>();
+        foreach (PlayerData pd in playerDatas)
+        {
+            l.Add(pd);
+        }
+        l.Sort();
+        foreach (PlayerData pd in l)
+        {
+            GameUI.Instance.AddLeaderBoard(pd);
+           
+        }
+        
+    }
+    
 
     
 
