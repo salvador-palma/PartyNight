@@ -17,14 +17,19 @@ public class Events : MonoBehaviour
     }
 
     public void startGame(){
-        
         CharacterSelect.Instance.CharSelectFadeOutEvent();
-        
-        
+    }
+
+    public void readyGame(){
+        GameState.Instance.setPlayerReadyServerRpc();
     }
 
     public void nextGame(){
         GameUI.Instance.next();
+    }
+
+    public void ResetLoad(Logo load){
+        load.newTask(5);
     }
     
     

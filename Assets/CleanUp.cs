@@ -19,17 +19,12 @@ public class CleanUp : MonoBehaviour
         GameObject NM = GameObject.Find("NetworkManager");
         GameObject GM = GameObject.Find("GameManager");
         GameObject LM = GameObject.Find("LobbyManager");
-        GameObject[] ScrollerList = GameObject.FindGameObjectsWithTag("Scroller");
+        
 
         if(NM != null) Destroy(NM);
         if(GM != null) Destroy(GM);
         if(LM != null) Destroy(LM);
         
-        if(ScrollerList.Length > 1){
-            for (int i = 1; i < ScrollerList.Length; i++)
-            {
-                Destroy(ScrollerList[i]);
-            }
-        }
+        
     }
 }

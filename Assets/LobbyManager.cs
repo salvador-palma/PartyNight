@@ -78,23 +78,27 @@ public class LobbyManager : MonoBehaviour
     }
     public async void CreateLobby(string lobbyName, bool isPrivate){
         try{
+            Logo logo = GameObject.Find("Logo").GetComponent<Logo>();
+            logo.newTask(5);
+            logo.Progress();
             joinedLobby = await LobbyService.Instance.CreateLobbyAsync(lobbyName, 8, new CreateLobbyOptions{
                 IsPrivate = isPrivate
             });
+            logo.Progress();
 
             Allocation allocation = await AllocateRelay();
-
+            logo.Progress();
             string relayCode = await GetRelayCode(allocation);
+            logo.Progress();
             await LobbyService.Instance.UpdateLobbyAsync(joinedLobby.Id, new UpdateLobbyOptions{
                 Data = new Dictionary<string, DataObject>{
                     {"RelayCode", new DataObject(DataObject.VisibilityOptions.Member, relayCode)}
                 }
             });
-
-
+            logo.Progress();
             NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(new RelayServerData(allocation, "dtls"));
-
             GameState.Instance.StartHost();
+            logo.Progress();
             NetworkManager.Singleton.SceneManager.LoadScene("CharacterSelect", LoadSceneMode.Single);
             
         }catch(LobbyServiceException e){
@@ -177,11 +181,17 @@ public class LobbyManager : MonoBehaviour
     public async void JoinID(string id){
         try
         {
+            Logo logo = GameObject.Find("Logo").GetComponent<Logo>();
+            logo.newTask(4);
             joinedLobby = await LobbyService.Instance.JoinLobbyByIdAsync(id);
+            logo.Progress();
             string relayCode = joinedLobby.Data["RelayCode"].Value;
             JoinAllocation joinAllocation = await JoinRelay(relayCode);
+            logo.Progress();
             NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(new RelayServerData(joinAllocation, "dtls"));
+            logo.Progress();
             GameState.Instance.StartClient();
+            logo.Progress();
         }
         catch (LobbyServiceException e)
         {

@@ -1,13 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Unity.Netcode;
 using TMPro;
+using Microsoft.Unity.VisualStudio.Editor;
 
 public class GameUI : NetworkBehaviour
 {
     public static GameUI Instance;
-    [SerializeField] private GameObject TutorialPanel;
+
     [SerializeField] private GameObject CountdownPanel;
     [SerializeField] private GameObject WinPanel;
     [SerializeField] private GameObject WinWaitingUI;
@@ -16,6 +18,10 @@ public class GameUI : NetworkBehaviour
     [SerializeField] private Transform leaderboardTemplate;
 
     [SerializeField] private Animator Scroller;
+    [SerializeField] private UnityEngine.UI.Image TutorialImage;
+    [SerializeField] private TextMeshProUGUI descriptionText;
+    [SerializeField] private string description;
+    [SerializeField] private Sprite tutorial;
     
     
 
@@ -23,12 +29,16 @@ public class GameUI : NetworkBehaviour
     private void Awake() {
         Instance = this;
     }
+    private void Start() {
+        TutorialImage.sprite = tutorial;
+        descriptionText.text = description;
+    }
     public void setReady(){
         leaderboardTemplate.gameObject.SetActive(false);
-        TutorialPanel.SetActive(false);
+        Scroller.Play("ReadyTransition");
         CountdownPanel.SetActive(true);
        
-        GameState.Instance.setPlayerReadyServerRpc();
+        // GameState.Instance.setPlayerReadyServerRpc();
     }
 
     public void ShowWin(){

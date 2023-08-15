@@ -10,6 +10,16 @@ using System;
 
 public class LobbyUI : MonoBehaviour
 {
+    [SerializeField] private Button JoinTab;
+    [SerializeField] private Button HostTab;
+    [SerializeField] private Button SearchTab;
+    private GameObject prevPanel;
+    private Button prev;
+
+    [SerializeField] private GameObject JoinPanel;
+    [SerializeField] private GameObject HostPanel;
+    [SerializeField] private GameObject SearchPanel;
+
     [SerializeField] private Button create;
     [SerializeField] private Button join;
     [SerializeField] private Button joinCode;
@@ -22,11 +32,13 @@ public class LobbyUI : MonoBehaviour
     [SerializeField] private Transform LobbyContainer;
     [SerializeField] private Transform LobbyTemplate;
 
-    [SerializeField] private Animator ScrollerAnimator;
+    [SerializeField] private Animator CanvasAnimator;
 
     public static LobbyUI Instance;
 
     private void Awake() {
+        prev = SearchTab;
+        prevPanel = SearchPanel;
         Instance = this;
         create.onClick.AddListener(()=> {
             FadeOutScroller();
@@ -78,6 +90,33 @@ public class LobbyUI : MonoBehaviour
 
     public void FadeOutScroller(){
         //ScrollerAnimator.gameObject.GetComponent<Scroller>().activated = true;
-        ScrollerAnimator.Play("LobbyScreenFadeOut");
+        CanvasAnimator.Play("ThirdScreen");
+    }
+
+    public void PopUpAnimation(Animator anim){
+        if(anim.gameObject.name == prev.gameObject.name){return;}
+        anim.Play("ButtonsOn");
+        prev.GetComponent<Animator>().Play("ButtonsOff");
+        prev = anim.GetComponent<Button>();
+        string name = anim.gameObject.name;
+        prevPanel.SetActive(false);
+        switch(name){
+            case "Join":
+                prevPanel = JoinPanel;
+                break;
+            case "Host":
+                prevPanel = HostPanel;
+                break;
+            case "Search":
+                prevPanel = SearchPanel;
+                break;
+
+        }
+        prevPanel.SetActive(true);
+    }
+
+    public void Click(GameObject go){
+        Destroy(go);
+        GameObject.Find("Canvas").GetComponent<Animator>().Play("SecondScreen");
     }
 }
