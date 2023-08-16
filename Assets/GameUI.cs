@@ -34,11 +34,12 @@ public class GameUI : NetworkBehaviour
         descriptionText.text = description;
     }
     public void setReady(){
-        leaderboardTemplate.gameObject.SetActive(false);
+        //leaderboardTemplate.gameObject.SetActive(false);
+        
         Scroller.Play("ReadyTransition");
-        CountdownPanel.SetActive(true);
+        //CountdownPanel.SetActive(true);
        
-        // GameState.Instance.setPlayerReadyServerRpc();
+        GameState.Instance.setPlayerReadyServerRpc();
     }
 
     public void ShowWin(){
@@ -79,7 +80,7 @@ public class GameUI : NetworkBehaviour
     
 
     public void setAnimatorCountdown(){
-        CountdownPanel.GetComponent<Animator>().Play("Countdown");
+        Scroller.Play("CountDown");
         if(IsServer){
             MiniGame.Instance.MiniGameExtension.SpawnPlayers();
         }

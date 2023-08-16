@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using TMPro;
 
 public class Events : MonoBehaviour
 {
@@ -31,6 +31,11 @@ public class Events : MonoBehaviour
     public void ResetLoad(Logo load){
         load.newTask(5);
     }
+    
+    public void DisableSelf(){
+        gameObject.SetActive(false);
+    }
+
     
     
 }
