@@ -12,6 +12,7 @@ public struct PlayerData : IEquatable<PlayerData>, INetworkSerializable, ICompar
     public int colorID;
     public FixedString64Bytes nickname;
     public int points;
+    public int added_points;
 
     public int CompareTo(PlayerData other)
     {
@@ -20,7 +21,7 @@ public struct PlayerData : IEquatable<PlayerData>, INetworkSerializable, ICompar
 
     public bool Equals(PlayerData other)
     {
-        return ID == other.ID && colorID == other.colorID && nickname == other.nickname && points == other.points;
+        return ID == other.ID && colorID == other.colorID && nickname == other.nickname && points == other.points && added_points == other.added_points;
     }
 
     public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
@@ -29,6 +30,7 @@ public struct PlayerData : IEquatable<PlayerData>, INetworkSerializable, ICompar
         serializer.SerializeValue(ref colorID);
         serializer.SerializeValue(ref nickname);
         serializer.SerializeValue(ref points);
+        serializer.SerializeValue(ref added_points);
     }
 }
 public class CharacterSelectPlayer : MonoBehaviour

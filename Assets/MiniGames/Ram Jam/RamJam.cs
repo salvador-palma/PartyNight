@@ -50,7 +50,9 @@ public class RamJam : NetworkBehaviour,MiniGameCore
     {
         foreach(ulong id in PlayerEndDict.Keys){
             PlayerData playerData =  GameState.Instance.getPlayerData(id);
-            playerData.points += GameState.Instance.PointsPerPosition[PlayerEndDict[id]];
+            int pointsAdded = GameState.Instance.PointsPerPosition[PlayerEndDict[id]];
+            playerData.points += pointsAdded;
+            playerData.added_points = pointsAdded;
             GameState.Instance.playerDatas[GameState.Instance.getPlayerDataID(id)] = playerData;
         }
     }
@@ -69,6 +71,7 @@ public class RamJam : NetworkBehaviour,MiniGameCore
 
     public void SpawnPlayers()
     {
+        Debug.Log("Spawning");
         int i = 0;
         Vector2[] positions = SpawnPoints();
         foreach(ulong clientID in NetworkManager.Singleton.ConnectedClientsIds){

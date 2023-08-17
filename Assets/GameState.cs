@@ -14,7 +14,7 @@ public class GameState : NetworkBehaviour {
 
     enum State{WAITING, INGAME, FINISHED}
 
-    private int MAXPOINTS = 10;
+    private int MAXPOINTS = 120;
     [HideInInspector] public static GameState Instance {get; private set;}
 
     private static Dictionary<ulong, bool> PlayerReadyDict = new Dictionary<ulong, bool>();

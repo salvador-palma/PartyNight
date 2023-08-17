@@ -4,16 +4,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using Unity.Netcode;
 using TMPro;
-using Microsoft.Unity.VisualStudio.Editor;
+
 
 public class GameUI : NetworkBehaviour
 {
     public static GameUI Instance;
 
-    [SerializeField] private GameObject CountdownPanel;
-    [SerializeField] private GameObject WinPanel;
-    [SerializeField] private GameObject WinWaitingUI;
-    [SerializeField] private GameObject WinLeaderboardUI;
+
     [SerializeField] private Transform leaderboardContainer;
     [SerializeField] private Transform leaderboardTemplate;
 
@@ -32,9 +29,9 @@ public class GameUI : NetworkBehaviour
     private void Start() {
         TutorialImage.sprite = tutorial;
         descriptionText.text = description;
+        leaderboardTemplate.gameObject.SetActive(false);
     }
     public void setReady(){
-        //leaderboardTemplate.gameObject.SetActive(false);
         
         Scroller.Play("ReadyTransition");
         //CountdownPanel.SetActive(true);
@@ -43,14 +40,11 @@ public class GameUI : NetworkBehaviour
     }
 
     public void ShowWin(){
-        WinPanel.SetActive(true);
-        WinWaitingUI.SetActive(true);
-        WinLeaderboardUI.SetActive(false);
+        Scroller.Play("FinishLine");
     }
 
     public void InitLeaderboard(){
-        WinWaitingUI.SetActive(false);
-        WinLeaderboardUI.SetActive(true);
+        Scroller.Play("Finish");
         foreach(Transform t in leaderboardContainer){
             if(t == leaderboardTemplate) continue;
             Destroy(t.gameObject);
@@ -63,7 +57,7 @@ public class GameUI : NetworkBehaviour
     }
 
     IEnumerator NextGame(){
-        yield return new WaitForSecondsRealtime(5);
+        yield return new WaitForSecondsRealtime(7);
         StartMiniGameFadeOutClientRpc();
         
     }
@@ -73,8 +67,9 @@ public class GameUI : NetworkBehaviour
     }
     public void AddLeaderBoard(PlayerData playerData){
         Transform leaderTr = Instantiate(leaderboardTemplate, leaderboardContainer);
-        leaderTr.Find("Name").GetComponent<TextMeshProUGUI>().text = playerData.nickname.ToString();
+        leaderTr.Find("Nickname").GetComponent<TextMeshProUGUI>().text = playerData.nickname.ToString();
         leaderTr.Find("Points").GetComponent<TextMeshProUGUI>().text = playerData.points.ToString();
+        leaderTr.Find("PointsAdd").GetComponent<TextMeshProUGUI>().text = "+" + playerData.added_points.ToString();
         leaderTr.gameObject.SetActive(true); 
     }
     

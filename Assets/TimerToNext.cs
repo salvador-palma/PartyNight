@@ -5,11 +5,11 @@ using TMPro;
 
 using Unity.Netcode;
 
-public class TimerToNext : NetworkBehaviour
+public class TimerToNext : MonoBehaviour
 {
     private float timerMax = 1;
     private float timerMaxTimer = 1f;
-    private int seconds = 5;
+    private int seconds = 7;
     [SerializeField] private TextMeshProUGUI NextText;
     public bool activated = false;
     void Update()
@@ -17,7 +17,7 @@ public class TimerToNext : NetworkBehaviour
         timerMaxTimer -= Time.deltaTime;
         if(timerMaxTimer <=0){
             timerMaxTimer = timerMax;
-            NextText.text = "Next game in " + seconds;
+            NextText.text = "Next Game in " + seconds;
             seconds--;   
             if(seconds <= 0){
                 seconds = 0;
