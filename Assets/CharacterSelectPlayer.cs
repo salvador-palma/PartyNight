@@ -10,6 +10,8 @@ using Unity.Collections;
 public struct PlayerData : IEquatable<PlayerData>, INetworkSerializable, IComparable<PlayerData>{
     public ulong ID;
     public int colorID;
+    public int hairID;
+    public int eyesID;
     public FixedString64Bytes nickname;
     public int points;
     public int added_points;
@@ -21,13 +23,15 @@ public struct PlayerData : IEquatable<PlayerData>, INetworkSerializable, ICompar
 
     public bool Equals(PlayerData other)
     {
-        return ID == other.ID && colorID == other.colorID && nickname == other.nickname && points == other.points && added_points == other.added_points;
+        return ID == other.ID && colorID == other.colorID && nickname == other.nickname && points == other.points && added_points == other.added_points && hairID==other.hairID && eyesID == other.eyesID;
     }
 
     public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
     {
         serializer.SerializeValue(ref ID);
         serializer.SerializeValue(ref colorID);
+        serializer.SerializeValue(ref eyesID);
+        serializer.SerializeValue(ref hairID);
         serializer.SerializeValue(ref nickname);
         serializer.SerializeValue(ref points);
         serializer.SerializeValue(ref added_points);
@@ -63,7 +67,8 @@ public class CharacterSelectPlayer : MonoBehaviour
             readyText.SetActive(CharacterSelect.Instance.isPlayerReady(playerData.ID));
             playerVisual.setPlayerColor(GameState.Instance.getColor(playerData.colorID));
             nickText.text = playerData.nickname.ToString();
-
+            playerVisual.setPlayerEyes(playerData.eyesID);
+            playerVisual.setPlayerHair(playerData.hairID);
 
         }else{
             Hide();

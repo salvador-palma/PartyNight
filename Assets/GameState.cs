@@ -29,7 +29,7 @@ public class GameState : NetworkBehaviour {
     [SerializeField] private List<Color> playerColors;
     [SerializeField] private List<string> Minigames;
     [SerializeField] public List<int> PointsPerPosition;
-    private int rankPos;
+    
     private string PlayerName;
     
     private void Awake() {

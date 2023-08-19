@@ -27,10 +27,9 @@ public class MiniGame : NetworkBehaviour {
     [SerializeField] private float CameraSpeed = 50f;
     [SerializeField] public bool IsByScore;
 
-    [Header("Point Board Settings")]
-    [SerializeField] private Transform PointBoardContainer;
-    [SerializeField] private Transform PointBoardTemplate;
-
+    [Header("MiniGame Settings")]
+    [SerializeField] private Sprite TutorialImage;
+    [SerializeField] private string GameDescription;
 
     private bool SetupDone = false;
     private GameObject LocalPlayer;
@@ -51,7 +50,7 @@ public class MiniGame : NetworkBehaviour {
         
     }
     private void Start() {
-        
+        GameUI.Instance.SetMinigameDetails(TutorialImage, GameDescription);
         if(IsServer){
             foreach (ulong id in NetworkManager.Singleton.ConnectedClientsIds)
             {

@@ -954,7 +954,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 201326775}
-  - {fileID: 7435107458190446852}
+  - {fileID: 8360591804088095950}
   - {fileID: 1919319214}
   - {fileID: 1740222134}
   - {fileID: 1549065999}
@@ -3395,7 +3395,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f2bfdefc47c918f428ee0808a1f0084e, type: 3}
---- !u!4 &7435107458190446852 stripped
+--- !u!4 &8360591804088095950 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1380361137844520397, guid: f2bfdefc47c918f428ee0808a1f0084e, type: 3}
   m_PrefabInstance: {fileID: 7435107458190446851}

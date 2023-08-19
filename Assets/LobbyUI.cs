@@ -34,12 +34,33 @@ public class LobbyUI : MonoBehaviour
 
     [SerializeField] private Animator CanvasAnimator;
 
+    [SerializeField] private GameObject HairStyles;
+    [SerializeField] private GameObject EyeStyles;
+    [SerializeField] private Button HairButton;
+    [SerializeField] private Button EyeButton;
+    [SerializeField] private Button ProfileButton;
+    [SerializeField] private Transform SkinTemplate;
+
+   
+
     public static LobbyUI Instance;
 
     private void Awake() {
         prev = SearchTab;
         prevPanel = SearchPanel;
+        SkinTemplate.gameObject.SetActive(false);
         Instance = this;
+        ProfileButton.onClick.AddListener(()=>{
+            CanvasAnimator.Play("SkinScreen");
+        });
+        EyeButton.onClick.AddListener(()=>{
+            HairStyles.SetActive(false);
+            EyeStyles.SetActive(true);
+        });
+        HairButton.onClick.AddListener(()=>{
+            HairStyles.SetActive(true);
+            EyeStyles.SetActive(false);
+        });
         create.onClick.AddListener(()=> {
             FadeOutScroller();
             LobbyManager.Instance.CreateLobby(lobbyNameField.text, privateToggle.isOn);
@@ -51,6 +72,7 @@ public class LobbyUI : MonoBehaviour
             FadeOutScroller();
             LobbyManager.Instance.JoinCode(lobbyCodeField.text);});
         LobbyTemplate.gameObject.SetActive(false);
+        
 
     }
 
@@ -62,11 +84,33 @@ public class LobbyUI : MonoBehaviour
 
         LobbyManager.Instance.OnLobbyListChanged += LobbyListChanger;
         UpdateLobbyList(new List<Lobby>());
+
+        setupEyeSkins();
+        setupHairSkins();
     }
 
     private void LobbyListChanger(object sender, LobbyManager.OnLobbyListChangedEventsArgs e)
     {
         UpdateLobbyList(e.LobbyList);
+    }
+
+    private void setupHairSkins(){
+        List<Sprite> list = Skins.GetInstance().getHairList();
+        Transform container = HairStyles.transform.GetChild(0);
+        foreach(Sprite s in list){
+            Transform tr = Instantiate(SkinTemplate,container);
+            tr.GetChild(0).GetComponent<Image>().sprite = s;
+            tr.gameObject.SetActive(true);
+        }
+    }
+    private void setupEyeSkins(){
+        List<Sprite> list = Skins.GetInstance().getEyeList();
+        Transform container = EyeStyles.transform.GetChild(0);
+        foreach(Sprite s in list){
+            Transform tr = Instantiate(SkinTemplate,container);
+            tr.GetChild(0).GetComponent<Image>().sprite = s;
+            tr.gameObject.SetActive(true);
+        }
     }
 
     private void UpdateLobbyList(List<Lobby> LobbyList){

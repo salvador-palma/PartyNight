@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class LobbyTemplate : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI lobbyName;
+    [SerializeField] private TextMeshProUGUI lobbyCapacity;
     
     private Lobby lobby;
 
@@ -19,5 +20,8 @@ public class LobbyTemplate : MonoBehaviour
     public void SetLobby(Lobby lobby){
         this.lobby = lobby;
         lobbyName.text = lobby.Name;
+        int n = lobby.AvailableSlots;
+        int cap = lobby.MaxPlayers - n;
+        lobbyCapacity.text = cap + "/" + lobby.MaxPlayers;
     }
 }

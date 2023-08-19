@@ -15,10 +15,9 @@ public class GameUI : NetworkBehaviour
     [SerializeField] private Transform leaderboardTemplate;
 
     [SerializeField] private Animator Scroller;
-    [SerializeField] private UnityEngine.UI.Image TutorialImage;
+    [SerializeField] private Image TutorialImage;
     [SerializeField] private TextMeshProUGUI descriptionText;
-    [SerializeField] private string description;
-    [SerializeField] private Sprite tutorial;
+
     
     
 
@@ -27,9 +26,13 @@ public class GameUI : NetworkBehaviour
         Instance = this;
     }
     private void Start() {
-        TutorialImage.sprite = tutorial;
-        descriptionText.text = description;
+        
         leaderboardTemplate.gameObject.SetActive(false);
+    }
+
+    public void SetMinigameDetails(Sprite tutorial, string descr){
+        TutorialImage.sprite = tutorial;
+        descriptionText.text = descr;
     }
     public void setReady(){
         
