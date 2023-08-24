@@ -64,7 +64,9 @@ public class CatchaTon : NetworkBehaviour, MiniGameCore
         foreach(ulong id in teamDict.Keys){
             PlayerData playerData =  GameState.Instance.getPlayerData(id);
             int team = teamDict[id];
-            playerData.points += points[l.IndexOf(team)];
+            int pointsadd = points[l.IndexOf(team)];
+            playerData.points += pointsadd;
+            playerData.added_points = pointsadd;
             GameState.Instance.playerDatas[GameState.Instance.getPlayerDataID(id)] = playerData;
         }
     }

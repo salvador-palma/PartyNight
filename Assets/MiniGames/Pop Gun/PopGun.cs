@@ -60,7 +60,9 @@ public class PopGun : NetworkBehaviour, MiniGameCore
         Dictionary<ulong, int> transformedDictionary = PlayerPointsDict.OrderByDescending(pair => pair.Value).Select((pair, index) => new { pair.Key, Index = index }).ToDictionary(item => item.Key, item => item.Index);
         foreach(ulong id in transformedDictionary.Keys){
             PlayerData playerData =  GameState.Instance.getPlayerData(id);
-            playerData.points += GameState.Instance.PointsPerPosition[transformedDictionary[id]];
+            int addedPoints = GameState.Instance.PointsPerPosition[transformedDictionary[id]];
+            playerData.points += addedPoints;
+            playerData.added_points = addedPoints;
             GameState.Instance.playerDatas[GameState.Instance.getPlayerDataID(id)] = playerData;
         }
     }

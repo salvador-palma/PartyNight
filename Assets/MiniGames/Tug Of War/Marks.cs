@@ -5,13 +5,16 @@ using UnityEngine;
 
 using Unity.Netcode;
 using System;
+using Unity.Netcode.Components;
 
 public class Marks : NetworkBehaviour {
  
     [SerializeField] float X;
     [SerializeField] private TugOfWar tugOfWar;
     private bool over = false;
-
+    [SerializeField] private Transform[] spawnpoints;
+    private float timeToFadeOut = 2f;
+    private string tempStr;
     private void Start() {
         if(!IsServer){
             GetComponent<Marks>().enabled = false;
@@ -21,22 +24,43 @@ public class Marks : NetworkBehaviour {
     }
 
     private void Update() {
-        int s = checkMark();
-        if(s != 0 && !over){
-            over = true;
-            if(s==1){
-                tugOfWar.EndGame("Mark1");
-            }else{
-                tugOfWar.EndGame("Mark2");
+
+        if(over){
+            if(timeToFadeOut > 0f){
+                timeToFadeOut -= Time.deltaTime;
+                if(timeToFadeOut <= 0){
+                    tugOfWar.EndGame(tempStr);
+                }
             }
+            return;
         }
+        if(transform.position.x > 1.57f){
+            
+            End(1);
+            //tugOfWar.EndGame("Mark1");
+        }else if(transform.position.x < -1.57f){
+            
+            End(2);
+            //tugOfWar.EndGame("Mark2");
+        } 
+        
     }
-    private int checkMark(){
-        if(transform.position.x < -X){
-            return 2;  
-        }else if(transform.position.x > X){
-            return 1;
+
+    public Transform[] getSpawnpoints(){
+        return spawnpoints;
+    }
+
+    public void End(int teamWinner){
+        over = true;
+        tugOfWar.ResetCameraClientRpc();
+        if(teamWinner == 1){
+            tempStr = "Mark1";
+            GetComponent<NetworkAnimator>().SetTrigger("Win1");
+        }else{
+            tempStr = "Mark2";
+            GetComponent<NetworkAnimator>().SetTrigger("Win2");
         }
-        return 0;
+
     }
+    
 }

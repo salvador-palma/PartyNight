@@ -375,7 +375,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 2
   m_TargetDisplay: 0
 --- !u!224 &201326775
 RectTransform:
@@ -537,7 +537,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4279637270
+    rgba: 2971014422
   m_fontColor: {r: 0.08627451, g: 0.08235294, b: 0.08627451, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -1393,7 +1393,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4279637270
+    rgba: 2971014422
   m_fontColor: {r: 0.08627451, g: 0.08235294, b: 0.08627451, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -1860,7 +1860,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
+    rgba: 2986344447
   m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -2443,7 +2443,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
+    rgba: 2986344447
   m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3

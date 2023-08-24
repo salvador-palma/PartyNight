@@ -34,6 +34,8 @@ public class LobbyUI : MonoBehaviour
 
     [SerializeField] private Animator CanvasAnimator;
 
+    [Header("SkinMenu")]
+    [SerializeField] private Button BackButton;
     [SerializeField] private GameObject HairStyles;
     [SerializeField] private GameObject EyeStyles;
     [SerializeField] private Button HairButton;
@@ -50,6 +52,10 @@ public class LobbyUI : MonoBehaviour
         prevPanel = SearchPanel;
         SkinTemplate.gameObject.SetActive(false);
         Instance = this;
+        BackButton.onClick.AddListener(()=>{
+            CanvasAnimator.Play("SkinBackScreen");
+            SaveSkinDetails();
+        });
         ProfileButton.onClick.AddListener(()=>{
             CanvasAnimator.Play("SkinScreen");
         });
@@ -75,8 +81,9 @@ public class LobbyUI : MonoBehaviour
         
 
     }
-
+    
     private void Start() {
+        GetSkinSavedPrefs();
         nicknameField.text = GameState.Instance.getPlayerName();
         nicknameField.onValueChanged.AddListener((string newText) => {
             GameState.Instance.setPlayerName(newText);
@@ -88,7 +95,18 @@ public class LobbyUI : MonoBehaviour
         setupEyeSkins();
         setupHairSkins();
     }
-
+    private void GetSkinSavedPrefs(){
+        int hair = PlayerPrefs.GetInt("HairID",0);
+        int eyes = PlayerPrefs.GetInt("EyeID",0);
+        ProfileButton.transform.Find("Hair").GetComponent<SpriteRenderer>().sprite = Skins.GetInstance().getHair(hair);
+        ProfileButton.transform.Find("Eyes").GetComponent<SpriteRenderer>().sprite = Skins.GetInstance().getEye(eyes);
+        SkinVisual.HairID = hair;
+        SkinVisual.EyeID = eyes;
+    }
+    private void SaveSkinDetails(){
+        PlayerPrefs.SetInt("HairID", SkinVisual.HairID);
+        PlayerPrefs.SetInt("EyeID", SkinVisual.EyeID);
+    }
     private void LobbyListChanger(object sender, LobbyManager.OnLobbyListChangedEventsArgs e)
     {
         UpdateLobbyList(e.LobbyList);
@@ -97,18 +115,22 @@ public class LobbyUI : MonoBehaviour
     private void setupHairSkins(){
         List<Sprite> list = Skins.GetInstance().getHairList();
         Transform container = HairStyles.transform.GetChild(0);
+        int i =0;
         foreach(Sprite s in list){
             Transform tr = Instantiate(SkinTemplate,container);
-            tr.GetChild(0).GetComponent<Image>().sprite = s;
+            tr.GetChild(0).GetComponent<SpriteRenderer>().sprite = s;
+            tr.GetComponent<SkinVisual>().setSettings(1,i++);
             tr.gameObject.SetActive(true);
         }
     }
     private void setupEyeSkins(){
         List<Sprite> list = Skins.GetInstance().getEyeList();
         Transform container = EyeStyles.transform.GetChild(0);
+        int i = 0;
         foreach(Sprite s in list){
             Transform tr = Instantiate(SkinTemplate,container);
-            tr.GetChild(0).GetComponent<Image>().sprite = s;
+            tr.GetChild(0).GetComponent<SpriteRenderer>().sprite = s;
+            tr.GetComponent<SkinVisual>().setSettings(0,i++);
             tr.gameObject.SetActive(true);
         }
     }

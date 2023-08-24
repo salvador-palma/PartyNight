@@ -2,89 +2,88 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
-public class SplitDecision : MonoBehaviour,MiniGameCore
+public class SplitDecision : NetworkBehaviour,MiniGameCore
 {
     [SerializeField] private Transform PlayerPrefab;
-    [SerializeField] GameObject[] LevelTemplates;
-    [SerializeField] GameObject TemplateZero;
-    [SerializeField] Transform Grid;
-
-    GameObject[] currentTemplates;
-    [SerializeField] Camera cam;
+    [SerializeField] Transform[] LevelTemplates;
     
-    [SerializeField] float camSpeed;
-    private float deltaY;
-
+    private float currentTranspose;
     [SerializeField] float transpose;
 
-    [SerializeField] Transform deadWall;
-
     private bool inited = false;
-
     private int rankPos;
     private Dictionary<ulong,int> PlayerEndDict;
+
+    [SerializeField] private float camSpeed;
+    [SerializeField] private float deathSpeed;
+    private float nextX;
+    [SerializeField] GameObject Camera;
+
 
     void Start()
     {
         PlayerEndDict = new Dictionary<ulong, int>();
         rankPos = NetworkManager.Singleton.ConnectedClientsIds.Count - 1;
-        InitCurrentTemplates();
-        Grid.transform.position = new Vector3(0,0.5f,0);
+        
+        
+        foreach (Transform t in LevelTemplates)
+        {
+            t.gameObject.SetActive(false);
+        }
+
+        if(IsServer){
+            currentTranspose = transpose;
+            nextX = transpose;
+            InitCurrentTemplates();
+        }
+        
     }
 
     private void InitCurrentTemplates(){
-        currentTemplates = new GameObject[3];
-        currentTemplates[0] = Instantiate(TemplateZero);
-        currentTemplates[0].transform.parent = Grid;
-        for(int i = 1; i<3; i++){
-            int n = Random.Range(0, LevelTemplates.Length);
-            Vector3 vec = new Vector3(transpose/3, 0f, 0f);
-            currentTemplates[i] = Instantiate(LevelTemplates[n]);
-            currentTemplates[i].transform.parent = Grid;
-            currentTemplates[i].transform.position = vec * i;
-            
+        SpawnRandom();
+        SpawnRandom();
+    }
+    private void SpawnRandom(){
+        int n = Random.Range(0,2);
+        SpawnTemplateClientRpc(pickRandomTemplate(), currentTranspose, n);
+        currentTranspose += transpose;
+    }
+    private int pickRandomTemplate(){
+        return Random.Range(0,LevelTemplates.Length);
+    }
+    [ClientRpc]
+    public void SpawnTemplateClientRpc(int index, float transposeX, int Flip){
+        Transform tr = Instantiate(LevelTemplates[index]);
+        tr.gameObject.SetActive(true);
+        tr.position += new Vector3(transposeX,0,0);
+        if(Flip == 1){
+            tr.localScale = new Vector3(1,-1,1);
         }
     }
-
     // Update is called once per frame
     void FixedUpdate()
     {
-        if(!inited){return;}
-       
-        Vector3 vec = deadWall.position;
-        float f = camSpeed * Time.deltaTime;
-        vec.x += f;
-        deadWall.position = vec;
-        deltaY += f;
-        if(deltaY >= transpose/3){
-            deltaY = 0;
-            NextTemplate();
+        if(!inited || !IsServer){return;}
+        
+        Camera.transform.position += new Vector3(camSpeed * Time.deltaTime, 0f,0f);
+        transform.position += new Vector3(deathSpeed * Time.deltaTime, 0f,0f);
+        if(Camera.transform.position.x >= nextX){
+            nextX += transpose;
+            SpawnRandom();
         }
         
     }
 
     
 
-    private void NextTemplate(){
-        int n = Random.Range(0, LevelTemplates.Length);
-        
-        Vector3 vec = currentTemplates[0].transform.position;
-        Destroy(currentTemplates[0].gameObject);
-        currentTemplates[0] = currentTemplates[1];
-        currentTemplates[1] = currentTemplates[2];
-        currentTemplates[2] = Instantiate(LevelTemplates[n]);
-
-        currentTemplates[2].transform.parent= Grid;
-        vec.x += transpose;
-        currentTemplates[2].transform.position = vec;
-
-
-    }
+    
     public void AddPoints()
     {
         foreach(ulong id in PlayerEndDict.Keys){
             PlayerData playerData =  GameState.Instance.getPlayerData(id);
-            playerData.points += GameState.Instance.PointsPerPosition[PlayerEndDict[id]];
+            int points = GameState.Instance.PointsPerPosition[PlayerEndDict[id]];
+            playerData.points += points;
+            playerData.added_points = points;
             GameState.Instance.playerDatas[GameState.Instance.getPlayerDataID(id)] = playerData;
         }
     }
@@ -92,6 +91,7 @@ public class SplitDecision : MonoBehaviour,MiniGameCore
     public void InitGame()
     {
         inited=true;
+        gameObject.GetComponent<Animator>().Play("PetrolFlow");
     }
 
      public Vector2[] SpawnPoints()

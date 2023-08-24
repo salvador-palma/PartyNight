@@ -1,30 +1,32 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.Netcode;
+
 using UnityEngine;
-using UnityEngine.SceneManagement;
+
 
 public class CleanUp : MonoBehaviour
 {
-    public void Awake(){
+    
+
+    public static void CleanAll(){
+        Debug.Log("Destroying 0");
+        Loop(GameObject.FindGameObjectsWithTag("NetMan"));
+        Debug.Log("Destroying 1");
+        Loop(GameObject.FindGameObjectsWithTag("GameMan"));
+        Debug.Log("Destroying 2");
+        Loop(GameObject.FindGameObjectsWithTag("LobbyMan"));
+        Debug.Log("Destroying 3");
         
-        if(SceneManager.GetActiveScene().name == "StartMenu"){
-            DeletePermanentObjects();
+    }
+
+    private static void Loop(GameObject[] gos){
+
+        for (int i = 0; i < gos.Length; i++)
+        {
+            Debug.Log("Destroyed: " + gos[i].name);
+            Destroy(gos[i]);
+                
         }
-    }
-
-    private void DeletePermanentObjects()
-    {
-        GameObject NM = GameObject.Find("NetworkManager");
-        GameObject GM = GameObject.Find("GameManager");
-        GameObject LM = GameObject.Find("LobbyManager");
-        
-
-        if(NM != null) Destroy(NM);
-        if(GM != null) Destroy(GM);
-        if(LM != null) Destroy(LM);
-        
         
     }
+
+    
 }

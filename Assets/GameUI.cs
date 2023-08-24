@@ -72,7 +72,9 @@ public class GameUI : NetworkBehaviour
         Transform leaderTr = Instantiate(leaderboardTemplate, leaderboardContainer);
         leaderTr.Find("Nickname").GetComponent<TextMeshProUGUI>().text = playerData.nickname.ToString();
         leaderTr.Find("Points").GetComponent<TextMeshProUGUI>().text = playerData.points.ToString();
-        leaderTr.Find("PointsAdd").GetComponent<TextMeshProUGUI>().text = "+" + playerData.added_points.ToString();
+        Transform pointsadd = leaderTr.Find("PointsAdd"); 
+        if(pointsadd != null){pointsadd.GetComponent<TextMeshProUGUI>().text = "+" + playerData.added_points.ToString();}
+        
         leaderTr.gameObject.SetActive(true); 
     }
     

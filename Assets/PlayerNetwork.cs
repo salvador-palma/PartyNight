@@ -29,6 +29,8 @@ public class PlayerNetwork : NetworkBehaviour {
         rb = gameObject.GetComponent<Rigidbody2D>();
         PlayerData playerData = GameState.Instance.getPlayerData(OwnerClientId);
         skinTr.gameObject.GetComponent<SpriteRenderer>().color = GameState.Instance.getColor(playerData.colorID);
+        skinTr.Find("Hair").GetComponent<SpriteRenderer>().sprite = Skins.GetInstance().getHair(playerData.hairID);
+        skinTr.Find("Eyes").GetComponent<SpriteRenderer>().sprite = Skins.GetInstance().getEye(playerData.eyesID);
     }
     public virtual void Update()
     {

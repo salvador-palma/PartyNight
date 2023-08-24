@@ -17,7 +17,8 @@ public class Results : NetworkBehaviour
     public void Start()
     {
         Menu.onClick.AddListener(()=>{
-            SceneManager.LoadScene("StartMenu");
+            CleanUp.CleanAll();
+            SceneManager.LoadScene("Lobby");
         });
         
         GameState.Instance.GetFinalLeaderBoard();

@@ -35,10 +35,10 @@ EditorBuildSettings:
   - enabled: 0
     path: 
     guid: 00000000000000000000000000000000
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Results.unity
     guid: 859c4ebf28a708d47a2eb67a2b988f0a
   - enabled: 1
-    path: Assets/Scenes/And the winner is....unity
+    path: Assets/Scenes/FinalScreen.unity
     guid: 88c4e06ec662b4540bf4ea221f5879d1
   m_configObjects: {}

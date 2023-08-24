@@ -12,6 +12,9 @@ TagManager:
   - Spawnpoints4
   - extra
   - Inter
+  - NetMan
+  - GameMan
+  - LobbyMan
   layers:
   - Default
   - TransparentFX

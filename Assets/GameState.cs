@@ -14,7 +14,7 @@ public class GameState : NetworkBehaviour {
 
     enum State{WAITING, INGAME, FINISHED}
 
-    private int MAXPOINTS = 120;
+    private int MAXPOINTS = 10;
     [HideInInspector] public static GameState Instance {get; private set;}
 
     private static Dictionary<ulong, bool> PlayerReadyDict = new Dictionary<ulong, bool>();
@@ -68,14 +68,17 @@ public class GameState : NetworkBehaviour {
 
     private void onClientDisconnect(ulong obj)
     {
-        changeNickServerRpc(getPlayerName());
+        changeNickServerRpc(getPlayerName(), SkinVisual.HairID, SkinVisual.EyeID);
+        
     }
 
     [ServerRpc(RequireOwnership=false)]
-    private void changeNickServerRpc(string nick, ServerRpcParams serverRpcParams = default){
+    private void changeNickServerRpc(string nick,int hairID, int eyeID, ServerRpcParams serverRpcParams = default){
         int playerIndex = getPlayerDataID(serverRpcParams.Receive.SenderClientId);
         PlayerData playerData = playerDatas[playerIndex];
         playerData.nickname = nick;
+        playerData.eyesID = eyeID;
+        playerData.hairID = hairID;
         playerDatas[playerIndex] = playerData;
     }
 
@@ -97,7 +100,7 @@ public class GameState : NetworkBehaviour {
             colorID = GetDefaultColor(),
             points = 0
         });
-        changeNickServerRpc(getPlayerName());
+        changeNickServerRpc(getPlayerName(), SkinVisual.HairID, SkinVisual.EyeID);
     }
 
     private void NetworkManager_ConnectionApprovalCallback(NetworkManager.ConnectionApprovalRequest connectionApprovalRequest, NetworkManager.ConnectionApprovalResponse connectionApprovalResponse){
@@ -275,7 +278,7 @@ public class GameState : NetworkBehaviour {
     }
 
     public void LoadWinningScreen(){
-        NetworkManager.Singleton.SceneManager.LoadScene("And the winner is...", LoadSceneMode.Single);
+        NetworkManager.Singleton.SceneManager.LoadScene("FinalScreen", LoadSceneMode.Single);
     }
 
     public void GetFinalLeaderBoard(){
