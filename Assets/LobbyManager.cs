@@ -19,6 +19,8 @@ public class LobbyManager : MonoBehaviour
 
     public static LobbyManager Instance;
     
+    public int LobbyPoints;
+    
     public event EventHandler<OnLobbyListChangedEventsArgs> OnLobbyListChanged;
     public class OnLobbyListChangedEventsArgs : EventArgs{
         public List<Lobby> LobbyList;
@@ -76,13 +78,16 @@ public class LobbyManager : MonoBehaviour
     private bool isLobbyHost(){
         return joinedLobby != null && joinedLobby.HostId == AuthenticationService.Instance.PlayerId;
     }
-    public async void CreateLobby(string lobbyName, bool isPrivate){
+    public async void CreateLobby(string lobbyName, bool isPrivate, int max_points){
         try{
             Logo logo = GameObject.Find("Logo").GetComponent<Logo>();
             logo.newTask(5);
             logo.Progress();
             joinedLobby = await LobbyService.Instance.CreateLobbyAsync(lobbyName, 8, new CreateLobbyOptions{
-                IsPrivate = isPrivate
+                IsPrivate = isPrivate,
+                Data = new Dictionary<string, DataObject>{
+                    {"MaxPoints", new DataObject(DataObject.VisibilityOptions.Member, max_points.ToString())}
+                }
             });
             logo.Progress();
 
@@ -100,6 +105,7 @@ public class LobbyManager : MonoBehaviour
             GameState.Instance.StartHost();
             logo.Progress();
             NetworkManager.Singleton.SceneManager.LoadScene("CharacterSelect", LoadSceneMode.Single);
+            //Debug.Log("Lobby Created with " + joinedLobby.Data["MaxPoints"].Value + " Max Points with privacy: " + joinedLobby.IsPrivate);
             
         }catch(LobbyServiceException e){
             Debug.Log(e);
@@ -228,7 +234,6 @@ public class LobbyManager : MonoBehaviour
 
         }
      }
-
      private async void ListLobbies(){
 
         try{

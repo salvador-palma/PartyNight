@@ -36,6 +36,9 @@ public class Events : MonoBehaviour
         gameObject.SetActive(false);
     }
 
+    public void endGame(){
+        GameObject.Find("MiniGame").GetComponent<Results>().endGame();
+    }
     
     
 }

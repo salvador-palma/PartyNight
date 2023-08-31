@@ -90,11 +90,11 @@ public class GameUI : NetworkBehaviour
     public void next(){
         if(IsServer){
             GameState gs = GameState.Instance;
+            gs.ResetDicts();
             if(gs.hasWinner()){
                 gs.LoadWinningScreen();
             }else{
-                GameState.Instance.ResetDicts();
-                GameState.Instance.LoadNextGame();
+                gs.LoadNextGame();
             }
             
         }

@@ -295,6 +295,16 @@ public class GameState : NetworkBehaviour {
         }
         
     }
+
+    public void ResetPoints(){
+        if(!IsServer){return;}
+        foreach (ulong id in NetworkManager.ConnectedClientsIds)
+        {
+            PlayerData pd = getPlayerData(id);
+            pd.points = 0;
+            playerDatas[getPlayerDataID(id)] = pd;
+        }
+    }
     
 
     

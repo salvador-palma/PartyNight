@@ -65,9 +65,9 @@ public class SplitDecision : NetworkBehaviour,MiniGameCore
     {
         if(!inited || !IsServer){return;}
         
-        Camera.transform.position += new Vector3(camSpeed * Time.deltaTime, 0f,0f);
+        //Camera.transform.position += new Vector3(camSpeed * Time.deltaTime, 0f,0f);
         transform.position += new Vector3(deathSpeed * Time.deltaTime, 0f,0f);
-        if(Camera.transform.position.x >= nextX){
+        if(transform.position.x >= nextX){
             nextX += transpose;
             SpawnRandom();
         }
@@ -90,10 +90,16 @@ public class SplitDecision : NetworkBehaviour,MiniGameCore
 
     public void InitGame()
     {
+        
+        PlayPetrolFlowClientRpc();
+    }
+    [ClientRpc]
+    private void PlayPetrolFlowClientRpc(){
         inited=true;
+        MiniGame.Instance.whoToFollow = PlayerNetwork.LocalInstance.transform;
+        MiniGame.Instance.CameraFollows = true;
         gameObject.GetComponent<Animator>().Play("PetrolFlow");
     }
-
      public Vector2[] SpawnPoints()
     {
         GameObject[] points = GameObject.FindGameObjectsWithTag("Spawnpoints");

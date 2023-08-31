@@ -76,6 +76,7 @@ public class RamJam : NetworkBehaviour,MiniGameCore
         Vector2[] positions = SpawnPoints();
         foreach(ulong clientID in NetworkManager.Singleton.ConnectedClientsIds){
             Transform PlayerTr = Instantiate(PlayerPrefab);
+            PlayerTr.localScale = new Vector3(0.1094221f,0.1094221f,0.1094221f);
             PlayerTr.transform.position = positions[i];
             i++;
             PlayerTr.GetComponent<NetworkObject>().SpawnAsPlayerObject(clientID, true);

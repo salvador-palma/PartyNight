@@ -27,13 +27,25 @@ public class LobbyUI : MonoBehaviour
     [SerializeField] private TMP_InputField lobbyNameField; 
     [SerializeField] private TMP_InputField lobbyCodeField; 
     [SerializeField] private TMP_InputField nicknameField; 
-    [SerializeField] private Toggle privateToggle; 
+    
 
     [SerializeField] private Transform LobbyContainer;
     [SerializeField] private Transform LobbyTemplate;
 
     [SerializeField] private Animator CanvasAnimator;
 
+    [Header("HostPanel")]
+    [SerializeField] private TMP_InputField PointsInputField;
+    public int[] LobbyPointsList = new int[]{60,120,240,300};
+    int PointID = 0;
+
+    [SerializeField] private Image IsPrivateButton;
+    private bool isPrivateLobby;
+    [SerializeField] Sprite[] lockSprites;
+
+    [Header("SearchPanel")]
+    [SerializeField] private GameObject SearchResults;
+    [SerializeField] private GameObject EmptyResults;
     [Header("SkinMenu")]
     [SerializeField] private Button BackButton;
     [SerializeField] private GameObject HairStyles;
@@ -69,7 +81,7 @@ public class LobbyUI : MonoBehaviour
         });
         create.onClick.AddListener(()=> {
             FadeOutScroller();
-            LobbyManager.Instance.CreateLobby(lobbyNameField.text, privateToggle.isOn);
+            LobbyManager.Instance.CreateLobby(lobbyNameField.text, isPrivateLobby, LobbyPointsList[PointID]);
         });
         join.onClick.AddListener(()=> {
             FadeOutScroller();
@@ -140,13 +152,13 @@ public class LobbyUI : MonoBehaviour
             if(t == LobbyTemplate) continue;
             Destroy(t.gameObject);
         }
-
+        
         foreach(Lobby l in LobbyList){
             Transform lobbyTr = Instantiate(LobbyTemplate, LobbyContainer);
             lobbyTr.gameObject.SetActive(true);
             lobbyTr.GetComponent<LobbyTemplate>().SetLobby(l);
         }
-
+        UpdateSearchResultsVisual(LobbyList.Count == 0);
 
     }
 
@@ -184,5 +196,44 @@ public class LobbyUI : MonoBehaviour
     public void Click(GameObject go){
         Destroy(go);
         GameObject.Find("Canvas").GetComponent<Animator>().Play("SecondScreen");
+    }
+
+    public void ChangePointsText(int points){
+        PointsInputField.text = points.ToString();
+    }
+
+    public void changeLeft(){
+        PointID -= 1;
+        if(PointID < 0){
+            PointID = LobbyPointsList.Length - 1;
+        }
+
+        ChangePointsText(LobbyPointsList[PointID]);
+    }
+    public void changeRight(){
+        PointID += 1;
+        if(PointID > LobbyPointsList.Length - 1){
+            PointID = 0;
+        }
+
+        ChangePointsText(LobbyPointsList[PointID]);
+    }
+
+    public void togglePrivate(){
+        isPrivateLobby = !isPrivateLobby;
+        changeToggleImage();
+
+    }
+    private void changeToggleImage(){
+        if(isPrivateLobby){
+            IsPrivateButton.sprite = lockSprites[0];
+        }else{
+            IsPrivateButton.sprite = lockSprites[1];
+        }
+    }
+
+    private void UpdateSearchResultsVisual(bool isEmpty){
+        EmptyResults.SetActive(isEmpty);
+        SearchResults.SetActive(!isEmpty);
     }
 }

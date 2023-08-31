@@ -20,8 +20,8 @@ public class MiniGame : NetworkBehaviour {
     [SerializeField] public MiniGameCore MiniGameExtension;
 
     [Header("General Settings")]
-    [SerializeField] private bool CameraFollows;
-    [SerializeField] private Transform whoToFollow;
+    [SerializeField] public bool CameraFollows;
+    [SerializeField] public Transform whoToFollow;
     [SerializeField] private bool FollowX;
     [SerializeField] private bool FollowY;
     [SerializeField] private float CameraSpeed = 50f;

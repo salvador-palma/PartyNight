@@ -956,7 +956,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: MiniGame
+  m_text: Penguin Maze
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8eb0255ad77eb4b40b32d48dfedde1c7, type: 2}
   m_sharedMaterial: {fileID: -6983974147429577738, guid: 8eb0255ad77eb4b40b32d48dfedde1c7, type: 2}
@@ -1205,7 +1205,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: MiniGame
+  m_text: Split Decision
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8eb0255ad77eb4b40b32d48dfedde1c7, type: 2}
   m_sharedMaterial: {fileID: -6983974147429577738, guid: 8eb0255ad77eb4b40b32d48dfedde1c7, type: 2}
@@ -2473,7 +2473,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: MiniGame
+  m_text: Catch'a Ton
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8eb0255ad77eb4b40b32d48dfedde1c7, type: 2}
   m_sharedMaterial: {fileID: -6983974147429577738, guid: 8eb0255ad77eb4b40b32d48dfedde1c7, type: 2}
@@ -2743,7 +2743,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 20d3928ab826ef34e80a536857f4d509, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 0cf18a4b009750e4e9ebf32aaf810b2d, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -2857,7 +2857,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: MiniGame
+  m_text: Pop Gun
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8eb0255ad77eb4b40b32d48dfedde1c7, type: 2}
   m_sharedMaterial: {fileID: -6983974147429577738, guid: 8eb0255ad77eb4b40b32d48dfedde1c7, type: 2}
@@ -3831,7 +3831,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: MiniGame
+  m_text: Penguin Maze
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8eb0255ad77eb4b40b32d48dfedde1c7, type: 2}
   m_sharedMaterial: {fileID: -6983974147429577738, guid: 8eb0255ad77eb4b40b32d48dfedde1c7, type: 2}
@@ -4536,7 +4536,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 7931aad1f4fd81144bb66af9f1d9d049, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 0cf18a4b009750e4e9ebf32aaf810b2d, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -4660,7 +4660,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: MiniGame
+  m_text: Pop Gun
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8eb0255ad77eb4b40b32d48dfedde1c7, type: 2}
   m_sharedMaterial: {fileID: -6983974147429577738, guid: 8eb0255ad77eb4b40b32d48dfedde1c7, type: 2}
@@ -4986,8 +4986,6 @@ MonoBehaviour:
   Scroller: {fileID: 7841023554451177413}
   TutorialImage: {fileID: 4900552776228210274}
   descriptionText: {fileID: 6014584363307478799}
-  description: make your way through the penguins and reach the goal
-  tutorial: {fileID: 21300000, guid: d0febaf92cd125044821a101cce4ab73, type: 3}
   NextTimer: {fileID: 1163352967}
 --- !u!114 &4282523139416429184
 MonoBehaviour:
@@ -5520,7 +5518,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: MiniGame
+  m_text: Split Decision
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8eb0255ad77eb4b40b32d48dfedde1c7, type: 2}
   m_sharedMaterial: {fileID: -6983974147429577738, guid: 8eb0255ad77eb4b40b32d48dfedde1c7, type: 2}

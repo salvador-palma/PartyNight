@@ -14,25 +14,32 @@ public class CharacterSelect : NetworkBehaviour
 
     public event EventHandler onReadyChange;
     private void Awake() {
+        
         Instance = this;
+       
     }
     public void setPlayerReady(){
+        Debug.Log("Ready!");
         setPlayerReadyServerRpc();
     }
 
     [ServerRpc(RequireOwnership = false)]
     public void setPlayerReadyServerRpc(ServerRpcParams serverRpcParams = default){
+        Debug.Log("DEBUG READY 0");
         syncPlayersReadyClientRpc(serverRpcParams.Receive.SenderClientId);
         PlayerReadyDict[serverRpcParams.Receive.SenderClientId] = true;
 
         bool AllReady = true;
+        Debug.Log("DEBUG READY 1");
         foreach (ulong clientID in NetworkManager.Singleton.ConnectedClientsIds){
+            Debug.Log("DEBUG READY 2 :" + clientID);
             if(!PlayerReadyDict.ContainsKey(clientID) || !PlayerReadyDict[clientID]){
                 AllReady = false;
                 break;
             }
         }
         if(AllReady){
+            Debug.Log("All Ready!");
             // LobbyManager.Instance.DeleteLobby();
             // DisableScrollerClientRpc();
             // NetworkManager.Singleton.SceneManager.LoadScene(GameState.Instance.getRandomMinigame(), LoadSceneMode.Single);
@@ -47,7 +54,7 @@ public class CharacterSelect : NetworkBehaviour
     
     [ClientRpc]
     public void CharSelectFadeOutClientRpc(){
-         ElementsAnimator.Play("Outro");
+        ElementsAnimator.Play("Outro");
     }
 
     
@@ -66,10 +73,11 @@ public class CharacterSelect : NetworkBehaviour
             CharSelectFadeOutEventServerRpc();
         }
     }
+    
     [ServerRpc]
     public void CharSelectFadeOutEventServerRpc(){
         
-        LobbyManager.Instance.DeleteLobby();
+        //LobbyManager.Instance.DeleteLobby();
         NetworkManager.Singleton.SceneManager.LoadScene(GameState.Instance.getRandomMinigame(), LoadSceneMode.Single);
     }
 }

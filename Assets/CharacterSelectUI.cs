@@ -33,5 +33,7 @@ public class CharacterSelectUI : MonoBehaviour
         codeTextShadow.text = lobby.LobbyCode;
         nameText.text = lobby.Name;
         nameTextShadow.text = lobby.Name;
+
+        
     }
 }
