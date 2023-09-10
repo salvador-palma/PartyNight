@@ -8,7 +8,7 @@ using TMPro;
 public class PopGun : NetworkBehaviour, MiniGameCore
 {
     [SerializeField] private TimerToEnd EndTimer;
-    private const int SpawnAmount = 3;
+    private const int SpawnAmount = 4;
     private const string SpawnItem = "Target";
     private Vector2 SpawnRange = new Vector2(8,4);
 
@@ -36,7 +36,7 @@ public class PopGun : NetworkBehaviour, MiniGameCore
     {
 
         SetupBoardsClientRpc();
-        initTimerClientRpc(15);
+        initTimerClientRpc(20);
         
         for (int i = 0; i < SpawnAmount; i++)
         {

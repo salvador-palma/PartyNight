@@ -18,7 +18,7 @@ public class GameUI : NetworkBehaviour
     [SerializeField] private Image TutorialImage;
     [SerializeField] private TextMeshProUGUI descriptionText;
 
-    
+    private Animator MiniGameIntroAnim;
     
 
     [SerializeField] private TimerToNext NextTimer;
@@ -26,7 +26,7 @@ public class GameUI : NetworkBehaviour
         Instance = this;
     }
     private void Start() {
-        
+        MiniGameIntroAnim = GameObject.Find("GameEffect").GetComponent<Animator>();
         leaderboardTemplate.gameObject.SetActive(false);
     }
 
@@ -37,6 +37,7 @@ public class GameUI : NetworkBehaviour
     public void setReady(){
         
         Scroller.Play("ReadyTransition");
+        MiniGameIntroAnim.Play("Outro");
         //CountdownPanel.SetActive(true);
        
         GameState.Instance.setPlayerReadyServerRpc();
@@ -98,6 +99,15 @@ public class GameUI : NetworkBehaviour
             }
             
         }
+    }
+
+    public void playMiniGameIntro(){
+        MiniGameIntroAnim.Play("Intro");
+    }
+
+    public void ShowTutorial(){
+        Debug.Log("ShowTutorial");
+        MiniGameIntroAnim.transform.Find("Tutorial").GetComponent<Animator>().Play("ShowTutorial");
     }
 
     

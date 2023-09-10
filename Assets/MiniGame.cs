@@ -24,6 +24,8 @@ public class MiniGame : NetworkBehaviour {
     [SerializeField] public Transform whoToFollow;
     [SerializeField] private bool FollowX;
     [SerializeField] private bool FollowY;
+    [SerializeField] private float DeltaX;
+    [SerializeField] private float DeltaY;
     [SerializeField] private float CameraSpeed = 50f;
     [SerializeField] public bool IsByScore;
 
@@ -89,10 +91,11 @@ public class MiniGame : NetworkBehaviour {
     private void FixedUpdate() {
         if(CameraFollows && SetupDone){
             Vector3 cur = Camera.main.transform.position;
-            Vector2 vec = Vector2.MoveTowards(Camera.main.transform.position, whoToFollow.position, CameraSpeed * Time.deltaTime);
+            Vector2 tr = whoToFollow.position + new Vector3(DeltaX,DeltaY,0);
+            Vector2 vec = Vector2.MoveTowards(Camera.main.transform.position, tr, CameraSpeed * Time.deltaTime);
             float fx = FollowX ? vec.x : cur.x;
             float fy = FollowY ? vec.y : cur.y;
-            Camera.main.transform.position = new Vector3(fx,fy,-10f);
+            Camera.main.transform.position = new Vector3(fx ,fy ,-10f);
         }
     } 
     // public void OnPlayerPointsChanged(ulong id, string amount){

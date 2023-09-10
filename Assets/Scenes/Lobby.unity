@@ -2995,6 +2995,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f47151af0f8209e43b4f86ddce8d29b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MAXPOINTS: 10
   playerColors:
   - {r: 0.990566, g: 0.77379954, b: 0.2009167, a: 1}
   - {r: 1, g: 0.56032187, b: 0.19339621, a: 1}
@@ -3007,6 +3008,7 @@ MonoBehaviour:
   - {r: 0.15841937, g: 0.3773585, b: 0.20825917, a: 1}
   - {r: 1, g: 1, b: 1, a: 1}
   Minigames:
+  - Split Decision
   - Penguin Maze
   PointsPerPosition: 0f0000000c0000000a0000000500000004000000030000000200000001000000
 --- !u!4 &749996131

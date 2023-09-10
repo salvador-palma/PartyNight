@@ -39,6 +39,10 @@ public class Events : MonoBehaviour
     public void endGame(){
         GameObject.Find("MiniGame").GetComponent<Results>().endGame();
     }
+
+    public void playMinigameIntro(){
+        GameUI.Instance.playMiniGameIntro();
+    }
     
     
 }

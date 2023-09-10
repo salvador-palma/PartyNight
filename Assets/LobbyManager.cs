@@ -89,6 +89,7 @@ public class LobbyManager : MonoBehaviour
                     {"MaxPoints", new DataObject(DataObject.VisibilityOptions.Member, max_points.ToString())}
                 }
             });
+            GameState.Instance.MAXPOINTS = max_points;
             logo.Progress();
 
             Allocation allocation = await AllocateRelay();
@@ -173,6 +174,7 @@ public class LobbyManager : MonoBehaviour
         {
             joinedLobby = await LobbyService.Instance.JoinLobbyByCodeAsync(code);
             string relayCode = joinedLobby.Data["RelayCode"].Value;
+            GameState.Instance.MAXPOINTS = int.Parse(joinedLobby.Data["MaxPoints"].Value);
             JoinAllocation joinAllocation = await JoinRelay(relayCode);
             NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(new RelayServerData(joinAllocation, "dtls"));
             GameState.Instance.StartClient();
